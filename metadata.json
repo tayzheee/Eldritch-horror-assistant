@@ -1,0 +1,6 @@
+{
+  "name": "Eldritch Horror Investigator Tracker",
+  "description": "A comprehensive Eldritch Horror companion tracker for managing investigator stats, tokens, combat dice roll modifiers, rerolls, and possessions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
