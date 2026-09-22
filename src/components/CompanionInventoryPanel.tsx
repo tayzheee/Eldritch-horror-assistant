@@ -215,9 +215,9 @@ export const CompanionInventoryPanel: React.FC<Props> = ({
                   </div>
                 ) : (
                   <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                    {possessions.map((card) => (
+                    {possessions.map((card, idx) => (
                       <div
-                        key={card.id}
+                        key={`${card.id}-${idx}`}
                         className="p-2 rounded-lg bg-slate-900/90 border border-slate-800 flex items-start justify-between gap-2 text-xs"
                       >
                         <div>

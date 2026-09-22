@@ -182,7 +182,14 @@ export const InvestigatorPortrait: React.FC<Props> = ({ investigatorId, name, cl
           fontFamily="Cinzel, serif"
           opacity="0.85"
         >
-          {name.split(' ').map(n => n[0]).join('')}
+          {(name || '')
+            .replace(/[^a-zA-Z\s]/g, '')
+            .trim()
+            .split(/\s+/)
+            .map((n) => n[0] || '')
+            .join('')
+            .slice(0, 3)
+            .toUpperCase() || '??'}
         </text>
 
         {/* Name Banner at bottom of portrait */}
@@ -197,7 +204,7 @@ export const InvestigatorPortrait: React.FC<Props> = ({ investigatorId, name, cl
           fontFamily="Cinzel, serif"
           letterSpacing="2"
         >
-          {name.toUpperCase()}
+          {(name || 'INVESTIGATOR').toUpperCase()}
         </text>
 
         {/* Vignette */}

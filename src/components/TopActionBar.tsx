@@ -54,6 +54,7 @@ export const TopActionBar: React.FC<Props> = ({
   fallenInvestigators,
   enabledExpansions,
   poolRemainingCount,
+  totalInvestigatorsCount,
   partyInvestigatorIds,
   allInvestigators,
   onSwitchInvestigator,
@@ -265,10 +266,11 @@ export const TopActionBar: React.FC<Props> = ({
 
           <button
             onClick={onOpenPoolModal}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-950/70 hover:bg-amber-900/80 border border-amber-600/60 text-amber-200 text-xs font-serif font-medium transition-colors"
-            title="Manage Investigator Pool &amp; Draft"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-950/70 hover:bg-amber-900/80 border border-amber-600/60 text-amber-200 text-xs font-serif font-semibold transition-all shadow-sm active:scale-95"
+            title={`Investigator Reserve Pool: ${poolRemainingCount} available of ${totalInvestigatorsCount} active in selected DLCs`}
           >
-            <span>Pool: {poolRemainingCount}</span>
+            <Users className="w-3.5 h-3.5 text-amber-400" />
+            <span>Pool: {poolRemainingCount} / {totalInvestigatorsCount}</span>
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Skull,
   Heart,
@@ -9,7 +9,8 @@ import {
   X,
   AlertTriangle,
   ArrowDownCircle,
-  HelpCircle
+  HelpCircle,
+  UserPlus
 } from 'lucide-react';
 import {
   InvestigatorStatic,
@@ -42,10 +43,41 @@ export const DeathSuccessionModal: React.FC<Props> = ({
   onCollectInheritance,
 }) => {
   const [cause, setCause] = useState<'health' | 'sanity' | 'devoured'>('health');
-  const [replacementId, setReplacementId] = useState<string>(
-    availableInvestigators.find((i) => i.id !== activeInvestigator.id)?.id || ''
-  );
+  const [replacementId, setReplacementId] = useState<string>('');
   const [viewMode, setViewMode] = useState<'declare' | 'fallen_list'>('declare');
+
+  // Strictly deduplicate replacement candidates and exclude the active investigator
+  const candidateInvestigators = useMemo(() => {
+    const seen = new Set<string>();
+    return (availableInvestigators || []).filter((inv) => {
+      if (!inv || !inv.id) return false;
+      if (inv.id === activeInvestigator.id) return false;
+      if (seen.has(inv.id)) return false;
+      seen.add(inv.id);
+      return true;
+    });
+  }, [availableInvestigators, activeInvestigator.id]);
+
+  // Sync replacementId when modal opens or candidates change
+  useEffect(() => {
+    if (isOpen) {
+      if (candidateInvestigators.length > 0) {
+        setReplacementId((prev) => {
+          if (prev && candidateInvestigators.some((c) => c.id === prev)) {
+            return prev;
+          }
+          return candidateInvestigators[0].id;
+        });
+      } else {
+        setReplacementId('');
+      }
+      setCause('health');
+    }
+  }, [isOpen, candidateInvestigators]);
+
+  const replacementPreview = useMemo(() => {
+    return candidateInvestigators.find((c) => c.id === replacementId) || null;
+  }, [candidateInvestigators, replacementId]);
 
   if (!isOpen) return null;
 
@@ -243,23 +275,67 @@ export const DeathSuccessionModal: React.FC<Props> = ({
 
               {/* Successor Investigator Draft */}
               <div className="space-y-2">
-                <label className="block text-xs font-serif font-bold uppercase tracking-wider text-slate-300">
-                  Select Replacement Investigator for {activePlayer?.name || 'Player'}
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-serif font-bold uppercase tracking-wider text-slate-300">
+                    Select Replacement Investigator for {activePlayer?.name || 'Player'}
+                  </label>
+                  <span className="text-[11px] text-amber-400 font-mono font-semibold">
+                    {candidateInvestigators.length} Available in Reserve Pool
+                  </span>
+                </div>
+
                 <select
                   value={replacementId}
                   onChange={(e) => setReplacementId(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 text-xs font-serif font-semibold focus:outline-none focus:border-amber-500"
                 >
                   <option value="">-- No replacement immediately (Observe game) --</option>
-                  {availableInvestigators
-                    .filter((i) => i.id !== activeInvestigator.id)
-                    .map((inv) => (
-                      <option key={inv.id} value={inv.id}>
-                        {inv.name} — {inv.title} ({inv.expansion?.toUpperCase() || 'CORE'})
-                      </option>
-                    ))}
+                  {candidateInvestigators.map((inv) => (
+                    <option key={inv.id} value={inv.id}>
+                      {inv.name} — {inv.title} ({inv.expansion?.toUpperCase() || 'CORE'})
+                    </option>
+                  ))}
                 </select>
+
+                {/* Replacement Preview Cardlet */}
+                {replacementPreview && (
+                  <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-700/80 flex items-center justify-between gap-3 text-xs">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-serif font-bold text-xs shadow-inner flex-shrink-0"
+                        style={{ backgroundColor: replacementPreview.avatarColor }}
+                      >
+                        {replacementPreview.name.substring(0, 2).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-serif font-bold text-slate-200 block truncate">
+                            {replacementPreview.name}
+                          </span>
+                          <span className="text-[9px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-300 border border-slate-700 font-mono uppercase">
+                            {replacementPreview.expansion?.toUpperCase() || 'CORE'}
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-slate-400 block truncate">
+                          Starts on: <strong className="text-amber-400">{replacementPreview.startingLocation}</strong>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-1.5 font-semibold text-xs">
+                        <span className="flex items-center gap-0.5 text-rose-400">
+                          <Heart className="w-3 h-3 fill-rose-500" />
+                          {replacementPreview.health}
+                        </span>
+                        <span className="flex items-center gap-0.5 text-sky-400">
+                          <Brain className="w-3 h-3 text-sky-400" />
+                          {replacementPreview.sanity}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </>
           ) : (

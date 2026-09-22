@@ -20,6 +20,7 @@ export default function App() {
     activePlayer,
     allInvestigators,
     enabledInvestigators,
+    availablePoolInvestigators,
     totalInvestigatorsCount,
     poolRemainingCount,
     // Expansion & Setup
@@ -186,11 +187,14 @@ export default function App() {
           <DeathAndSuccessionSection
             activeInvestigator={activeInvestigator}
             activeState={activeState}
+            activePlayer={activePlayer}
             allInvestigators={allInvestigators}
             enabledExpansions={gameState.enabledExpansions}
             fallenInvestigators={gameState.fallenInvestigators}
+            availablePoolInvestigators={availablePoolInvestigators}
             onMarkDefeated={markInvestigatorDefeated}
             onCollectInheritance={collectInheritance}
+            onSelectActiveInvestigator={setActiveInvestigator}
           />
         </section>
 
@@ -232,7 +236,7 @@ export default function App() {
         activeInvestigator={activeInvestigator}
         activeState={activeState}
         activePlayer={activePlayer}
-        availableInvestigators={enabledInvestigators}
+        availableInvestigators={availablePoolInvestigators}
         fallenInvestigators={gameState.fallenInvestigators}
         onMarkDefeated={markInvestigatorDefeated}
         onCollectInheritance={collectInheritance}
@@ -247,6 +251,7 @@ export default function App() {
         activeInvestigatorId={activeInvestigator.id}
         investigatorStates={gameState.investigatorStates}
         enabledExpansions={gameState.enabledExpansions}
+        fallenInvestigators={gameState.fallenInvestigators}
         onSelectActive={setActiveInvestigator}
         onAddToParty={addInvestigatorToParty}
         onSetStatus={setInvestigatorStatus}
@@ -262,6 +267,7 @@ export default function App() {
         onSpendReroll={spendReroll}
         onResetRerolls={resetRerolls}
         onUpdateToken={updateToken}
+        onRemovePossession={removePossession}
       />
     </div>
   );

@@ -121,6 +121,17 @@ export const DeathAndSuccessionSection: React.FC<Props> = ({
     return allInvestigators.find((inv) => inv.id === selectedReplacementId);
   }, [allInvestigators, selectedReplacementId]);
 
+  // Auto-select first replacement candidate if none selected or currently selected is invalid
+  useEffect(() => {
+    if (replacementCandidates.length > 0) {
+      if (!selectedReplacementId || !replacementCandidates.some((c) => c.id === selectedReplacementId)) {
+        setSelectedReplacementId(replacementCandidates[0].id);
+      }
+    } else {
+      setSelectedReplacementId('');
+    }
+  }, [replacementCandidates, selectedReplacementId]);
+
   // Current active encounter text based on selected cause
   const currentEncounterText = useMemo(() => {
     if (defeatCause === 'health') {

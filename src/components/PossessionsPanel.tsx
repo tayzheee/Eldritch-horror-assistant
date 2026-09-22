@@ -13,7 +13,8 @@ import {
   Dices,
   Swords,
   BookOpen,
-  Filter
+  Filter,
+  Flame,
 } from 'lucide-react';
 import { PossessionCard, CardType, SkillType } from '../types';
 import { PRESET_POSSESSIONS } from '../data/possessionsCatalog';
@@ -28,7 +29,7 @@ interface Props {
   onToggleExhaust: (id: string) => void;
 }
 
-type FilterCategory = 'all' | 'items' | 'spells' | 'service' | 'ally' | 'conditions';
+type FilterCategory = 'all' | 'items' | 'trinkets' | 'tasks' | 'allies' | 'services' | 'spells' | 'conditions';
 
 export const PossessionsPanel: React.FC<Props> = ({
   possessions,
@@ -54,6 +55,10 @@ export const PossessionsPanel: React.FC<Props> = ({
   const [customCombatAmount, setCustomCombatAmount] = useState<number>(2);
   const [customRerollSkill, setCustomRerollSkill] = useState<SkillType | ''>('');
   const [customRerollAmount, setCustomRerollAmount] = useState<number>(1);
+  const [customIsDiscardToGain, setCustomIsDiscardToGain] = useState(false);
+  const [customDiscardBonus, setCustomDiscardBonus] = useState<number>(3);
+  const [customIsOncePerRound, setCustomIsOncePerRound] = useState(false);
+  const [customOncePerRoundBonus, setCustomOncePerRoundBonus] = useState<number>(2);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -105,12 +110,14 @@ export const PossessionsPanel: React.FC<Props> = ({
 
     // Category check
     if (selectedCategory === 'spells' && card.type !== 'spell') return false;
-    if (selectedCategory === 'service' && card.type !== 'service') return false;
-    if (selectedCategory === 'ally' && card.type !== 'ally') return false;
+    if (selectedCategory === 'services' && card.type !== 'service') return false;
+    if (selectedCategory === 'allies' && card.type !== 'ally') return false;
     if (selectedCategory === 'conditions' && card.type !== 'condition') return false;
+    if (selectedCategory === 'trinkets' && card.type !== 'trinket') return false;
+    if (selectedCategory === 'tasks' && card.type !== 'task') return false;
     if (
       selectedCategory === 'items' &&
-      !['item', 'weapon', 'trinket', 'artifact'].includes(card.type)
+      !['item', 'weapon', 'artifact'].includes(card.type)
     ) {
       return false;
     }
@@ -122,7 +129,9 @@ export const PossessionsPanel: React.FC<Props> = ({
       const matchEffect = card.effectText.toLowerCase().includes(q);
       const matchFlavor = card.flavorText?.toLowerCase().includes(q) || false;
       const matchType = card.type.toLowerCase().includes(q);
-      if (!matchName && !matchEffect && !matchFlavor && !matchType) return false;
+      const matchCategory = card.category?.toLowerCase().includes(q) || false;
+      const matchTraits = card.traits?.some((t) => t.toLowerCase().includes(q)) || false;
+      if (!matchName && !matchEffect && !matchFlavor && !matchType && !matchCategory && !matchTraits) return false;
     }
 
     return true;
@@ -133,10 +142,12 @@ export const PossessionsPanel: React.FC<Props> = ({
   // Category counts based on poolCards
   const categoryCounts: Record<FilterCategory, number> = {
     all: poolCards.length,
-    items: poolCards.filter((c) => ['item', 'weapon', 'trinket', 'artifact'].includes(c.type)).length,
+    items: poolCards.filter((c) => ['item', 'weapon', 'artifact'].includes(c.type)).length,
+    trinkets: poolCards.filter((c) => c.type === 'trinket').length,
+    tasks: poolCards.filter((c) => c.type === 'task').length,
+    allies: poolCards.filter((c) => c.type === 'ally').length,
+    services: poolCards.filter((c) => c.type === 'service').length,
     spells: poolCards.filter((c) => c.type === 'spell').length,
-    service: poolCards.filter((c) => c.type === 'service').length,
-    ally: poolCards.filter((c) => c.type === 'ally').length,
     conditions: poolCards.filter((c) => c.type === 'condition').length,
   };
 
@@ -179,6 +190,22 @@ export const PossessionsPanel: React.FC<Props> = ({
       };
     }
 
+    if (customIsDiscardToGain) {
+      newCard.isDiscardToGain = true;
+      newCard.discardBonus = {
+        amount: customDiscardBonus,
+        description: `Discard to gain +${customDiscardBonus} to test.`,
+      };
+    }
+
+    if (customIsOncePerRound) {
+      newCard.isOncePerRound = true;
+      newCard.oncePerRoundBonus = {
+        amount: customOncePerRoundBonus,
+        description: `Once per round: Gain +${customOncePerRoundBonus} to test.`,
+      };
+    }
+
     onAddPossession(newCard);
     setIsCustomModalOpen(false);
     // Reset fields
@@ -187,6 +214,8 @@ export const PossessionsPanel: React.FC<Props> = ({
     setCustomStatSkill('');
     setCustomCombatSkill('');
     setCustomRerollSkill('');
+    setCustomIsDiscardToGain(false);
+    setCustomIsOncePerRound(false);
   };
 
   const getSkillIcon = (skill?: SkillType) => {
@@ -293,14 +322,14 @@ export const PossessionsPanel: React.FC<Props> = ({
               scrollbarColor: '#475569 #0f172a',
             }}
           >
-            {possessions.map((card) => {
+            {possessions.map((card, idx) => {
               const isExhausted = card.isExhausted;
               const hasCombatBonus = card.combatBonus !== undefined;
               const hasReroll = card.rerollsGranted !== undefined;
 
               return (
                 <div
-                  key={card.id}
+                  key={`${card.id}-${idx}`}
                   className={`w-72 sm:w-80 flex-shrink-0 snap-start relative flex flex-col justify-between rounded-xl overflow-hidden shadow-2xl transition-all duration-200 border-2 ${
                     isExhausted
                       ? 'opacity-60 grayscale border-slate-700'
@@ -330,7 +359,7 @@ export const PossessionsPanel: React.FC<Props> = ({
                           {getExpansionBadge(card.expansion)}
                         </div>
                         <div className="font-serif italic text-xs font-semibold uppercase tracking-widest text-[#7c5e42]">
-                          {card.type}
+                          {card.category || card.type}
                         </div>
                       </div>
                     </div>
@@ -387,6 +416,26 @@ export const PossessionsPanel: React.FC<Props> = ({
                         <span className="inline-flex items-center gap-1 bg-blue-900/30 text-blue-950 border border-blue-800/40 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono">
                           <Dices className="w-3 h-3 text-blue-800" />
                           Reroll {card.rerollsGranted?.amount}
+                        </span>
+                      )}
+
+                      {card.isDiscardToGain && (
+                        <span
+                          className="inline-flex items-center gap-1 bg-rose-900/30 text-rose-950 border border-rose-800/40 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono"
+                          title="Discard to gain effect (supersedes passive bonuses)"
+                        >
+                          <Flame className="w-3 h-3 text-rose-800" />
+                          Discard
+                        </span>
+                      )}
+
+                      {card.isOncePerRound && (
+                        <span
+                          className="inline-flex items-center gap-1 bg-indigo-900/30 text-indigo-950 border border-indigo-800/40 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-mono"
+                          title="Once per round ability (supersedes pure static passive bonuses)"
+                        >
+                          <Sparkles className="w-3 h-3 text-indigo-800" />
+                          1/Round
                         </span>
                       )}
                     </div>
@@ -467,9 +516,11 @@ export const PossessionsPanel: React.FC<Props> = ({
                   [
                     { id: 'all', label: 'All Cards' },
                     { id: 'items', label: 'Items & Weapons' },
+                    { id: 'trinkets', label: 'Trinkets' },
+                    { id: 'tasks', label: 'Tasks' },
+                    { id: 'allies', label: 'Allies' },
+                    { id: 'services', label: 'Services' },
                     { id: 'spells', label: 'Spells' },
-                    { id: 'service', label: 'Service' },
-                    { id: 'ally', label: 'Allies' },
                     { id: 'conditions', label: 'Conditions' },
                   ] as { id: FilterCategory; label: string }[]
                 ).map((cat) => {
@@ -565,7 +616,7 @@ export const PossessionsPanel: React.FC<Props> = ({
                                   {getExpansionBadge(card.expansion)}
                                 </div>
                                 <span className="text-[10px] uppercase font-semibold tracking-wider text-amber-400">
-                                  {card.type}
+                                  {card.category || card.type}
                                 </span>
                               </div>
                             </div>
@@ -675,6 +726,7 @@ export const PossessionsPanel: React.FC<Props> = ({
                     <option value="service">Service</option>
                     <option value="ally">Ally</option>
                     <option value="trinket">Trinket</option>
+                    <option value="task">Task</option>
                     <option value="condition">Condition</option>
                     <option value="artifact">Artifact</option>
                   </select>
@@ -752,6 +804,63 @@ export const PossessionsPanel: React.FC<Props> = ({
                       className="w-1/3 px-2 py-1 bg-slate-900 border border-slate-700 rounded text-xs font-mono"
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Special Eldritch Rules (Discard to Gain & Once per Round) */}
+              <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-750 space-y-2.5 text-xs">
+                <span className="font-bold text-amber-300 block uppercase tracking-wider text-[11px]">
+                  Special Rules (Supersedes Passive Bonuses)
+                </span>
+
+                <div className="flex items-center justify-between gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer text-slate-300">
+                    <input
+                      type="checkbox"
+                      checked={customIsDiscardToGain}
+                      onChange={(e) => setCustomIsDiscardToGain(e.target.checked)}
+                      className="rounded border-slate-700 text-rose-600 focus:ring-rose-500"
+                    />
+                    <span>Discard to Gain Bonus (supersedes passive)</span>
+                  </label>
+                  {customIsDiscardToGain && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-slate-400">Bonus:</span>
+                      <input
+                        type="number"
+                        min="1"
+                        max="10"
+                        value={customDiscardBonus}
+                        onChange={(e) => setCustomDiscardBonus(parseInt(e.target.value) || 1)}
+                        className="w-14 px-2 py-0.5 bg-slate-950 border border-slate-700 rounded font-mono text-center text-rose-300 font-bold"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer text-slate-300">
+                    <input
+                      type="checkbox"
+                      checked={customIsOncePerRound}
+                      onChange={(e) => setCustomIsOncePerRound(e.target.checked)}
+                      className="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500"
+                    />
+                    <span>Once per Round Ability (supersedes passive)</span>
+                  </label>
+                  {customIsOncePerRound && (
+                    <div className="flex items-center gap-1">
+                      <span className="text-slate-400">Bonus:</span>
+                      <input
+                        type="number"
+                        min="1"
+                        max="10"
+                        value={customOncePerRoundBonus}
+                        onChange={(e) => setCustomOncePerRoundBonus(parseInt(e.target.value) || 1)}
+                        className="w-14 px-2 py-0.5 bg-slate-950 border border-slate-700 rounded font-mono text-center text-indigo-300 font-bold"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 

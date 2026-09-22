@@ -87,22 +87,22 @@ export const InvestigatorProfile: React.FC<Props> = ({
   // Calculate bonuses from equipped / unexhausted possessions
   const activePossessions = state.possessions.filter((p) => !p.isExhausted);
 
-  // Combat bonuses by skill (e.g. .45 Automatic provides +3 Strength in Combat Encounters)
-  const combatBonuses: Record<SkillType, number> = {
-    lore: 0,
-    influence: 0,
-    observation: 0,
-    strength: 0,
-    will: 0,
+  // Combat bonuses by skill (Highest Gain Rule: items/spells do NOT stack; only highest applies)
+  const combatBonusDetails: Record<SkillType, { amount: number; source: string; isSpell: boolean }> = {
+    lore: { amount: 0, source: '', isSpell: false },
+    influence: { amount: 0, source: '', isSpell: false },
+    observation: { amount: 0, source: '', isSpell: false },
+    strength: { amount: 0, source: '', isSpell: false },
+    will: { amount: 0, source: '', isSpell: false },
   };
 
-  // Passive stat bonuses (e.g. Hired Muscle provides +1 Strength)
-  const passiveStatBonuses: Record<SkillType, number> = {
-    lore: 0,
-    influence: 0,
-    observation: 0,
-    strength: 0,
-    will: 0,
+  // Passive stat bonuses (Highest Gain Rule: highest single passive bonus applies, no stacking)
+  const passiveStatBonusDetails: Record<SkillType, { amount: number; source: string }> = {
+    lore: { amount: 0, source: '' },
+    influence: { amount: 0, source: '' },
+    observation: { amount: 0, source: '' },
+    strength: { amount: 0, source: '' },
+    will: { amount: 0, source: '' },
   };
 
   // Reroll abilities granted by items / assets (e.g. Hired Muscle grants 1 reroll on Strength test)
@@ -115,12 +115,29 @@ export const InvestigatorProfile: React.FC<Props> = ({
   };
 
   activePossessions.forEach((item) => {
+    // Passive stat bonus: highest gain
     if (item.statBonus) {
-      passiveStatBonuses[item.statBonus.skill] += item.statBonus.amount;
+      const skill = item.statBonus.skill;
+      if (item.statBonus.amount > passiveStatBonusDetails[skill].amount) {
+        passiveStatBonusDetails[skill] = {
+          amount: item.statBonus.amount,
+          source: item.name,
+        };
+      }
     }
+
+    // Combat bonus: highest gain
     if (item.combatBonus) {
-      combatBonuses[item.combatBonus.skill] += item.combatBonus.amount;
+      const skill = item.combatBonus.skill;
+      if (item.combatBonus.amount > combatBonusDetails[skill].amount) {
+        combatBonusDetails[skill] = {
+          amount: item.combatBonus.amount,
+          source: item.name,
+          isSpell: item.type === 'spell',
+        };
+      }
     }
+
     if (item.rerollsGranted) {
       if (item.rerollsGranted.skill) {
         rerollsBySkill[item.rerollsGranted.skill].push({
@@ -138,6 +155,22 @@ export const InvestigatorProfile: React.FC<Props> = ({
       }
     }
   });
+
+  const combatBonuses: Record<SkillType, number> = {
+    lore: combatBonusDetails.lore.amount,
+    influence: combatBonusDetails.influence.amount,
+    observation: combatBonusDetails.observation.amount,
+    strength: combatBonusDetails.strength.amount,
+    will: combatBonusDetails.will.amount,
+  };
+
+  const passiveStatBonuses: Record<SkillType, number> = {
+    lore: passiveStatBonusDetails.lore.amount,
+    influence: passiveStatBonusDetails.influence.amount,
+    observation: passiveStatBonusDetails.observation.amount,
+    strength: passiveStatBonusDetails.strength.amount,
+    will: passiveStatBonusDetails.will.amount,
+  };
 
   // Investigator passive rerolls:
   if (investigator.id === 'daisy-walker') {
@@ -224,9 +257,16 @@ export const InvestigatorProfile: React.FC<Props> = ({
                   <RotateCcw className="w-4 h-4" />
                 </button>
               </div>
-              <h2 className="font-serif text-base sm:text-lg text-slate-400 font-medium tracking-wide italic">
-                {investigator.title}
-              </h2>
+              <div className="flex items-center gap-2 flex-wrap mt-0.5">
+                <h2 className="font-serif text-base sm:text-lg text-slate-400 font-medium tracking-wide italic">
+                  {investigator.title}
+                </h2>
+                {investigator.role && (
+                  <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-950/60 border border-amber-600/40 text-amber-300">
+                    Role: {investigator.role}
+                  </span>
+                )}
+              </div>
               <p className="mt-2 text-xs sm:text-sm text-slate-300/80 font-serif italic border-l-2 border-amber-600/60 pl-2.5 py-0.5">
                 {investigator.quote}
               </p>
@@ -425,7 +465,7 @@ export const InvestigatorProfile: React.FC<Props> = ({
                       {passiveBonus !== 0 && (
                         <div
                           className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                          title="Item / Asset Passive Bonus"
+                          title={`Passive Bonus: +${passiveBonus} (${passiveStatBonusDetails[key].source} - highest gain, non-stacking)`}
                         >
                           +{passiveBonus} Item
                         </div>
@@ -435,7 +475,7 @@ export const InvestigatorProfile: React.FC<Props> = ({
                       {combatBonus > 0 && (
                         <div
                           className="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-red-700 text-white border border-red-500 shadow-md flex items-center gap-1 animate-pulse hover:animate-none"
-                          title={`Combat Encounter Bonus: +${combatBonus} dice during combat`}
+                          title={`Combat Bonus: +${combatBonus} (${combatBonusDetails[key].source} - highest gain, weapon/spell do not stack)`}
                         >
                           <Swords className="w-3.5 h-3.5" />
                           <span>+{combatBonus}</span>
@@ -669,17 +709,34 @@ export const InvestigatorProfile: React.FC<Props> = ({
 
           {/* Starting Setup */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-slate-850 p-3.5 rounded-xl border border-slate-750">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
-                Starting Location
-              </span>
-              <p className="text-sm font-medium text-slate-200">{investigator.startingLocation}</p>
+            <div className="bg-slate-850 p-3.5 rounded-xl border border-slate-750 space-y-2.5">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
+                  Starting Location
+                </span>
+                <p className="text-sm font-medium text-slate-200">{investigator.startingLocation}</p>
+              </div>
+              {investigator.role && (
+                <div className="pt-2 border-t border-slate-750/70">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+                    Archetype Role
+                  </span>
+                  <span className="inline-block text-xs font-medium px-2 py-0.5 rounded bg-amber-950/60 border border-amber-500/30 text-amber-300">
+                    {investigator.role}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="bg-slate-850 p-3.5 rounded-xl border border-slate-750">
               <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block mb-1">
                 Starting Possessions
               </span>
+              {investigator.startingPossessionsSummary && (
+                <div className="mb-2 px-2.5 py-1 bg-amber-950/40 border border-amber-600/30 rounded-lg text-amber-200 text-xs font-serif font-semibold">
+                  {investigator.startingPossessionsSummary}
+                </div>
+              )}
               <ul className="text-xs text-slate-300 space-y-1">
                 {investigator.startingPossessions.map((p) => (
                   <li key={p.id} className="flex items-center gap-1.5">
@@ -687,6 +744,24 @@ export const InvestigatorProfile: React.FC<Props> = ({
                     <span className="font-semibold">{p.name}</span> ({p.type})
                   </li>
                 ))}
+                {investigator.startingTokens?.clues ? (
+                  <li className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    <span>{investigator.startingTokens.clues} Clue{investigator.startingTokens.clues > 1 ? 's' : ''}</span>
+                  </li>
+                ) : null}
+                {investigator.startingTokens?.resources ? (
+                  <li className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
+                    <span>{investigator.startingTokens.resources} Resource{investigator.startingTokens.resources > 1 ? 's' : ''}</span>
+                  </li>
+                ) : null}
+                {investigator.startingTokens?.focus ? (
+                  <li className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                    <span>{investigator.startingTokens.focus} Focus</span>
+                  </li>
+                ) : null}
                 {investigator.startingTokens?.shipTickets ? (
                   <li className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
@@ -697,6 +772,12 @@ export const InvestigatorProfile: React.FC<Props> = ({
                   <li className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
                     <span>{investigator.startingTokens.trainTickets} Train Ticket</span>
+                  </li>
+                ) : null}
+                {investigator.startingSkillModifiers?.will ? (
+                  <li className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                    <span className="text-purple-300 font-semibold">+1 Will Improvement</span>
                   </li>
                 ) : null}
               </ul>

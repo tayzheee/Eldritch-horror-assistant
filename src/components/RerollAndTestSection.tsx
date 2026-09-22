@@ -11,10 +11,19 @@ import {
   HelpCircle,
   Plus,
   Zap,
-  Activity
+  Activity,
+  Wand2,
+  Shield,
+  Info,
+  AlertTriangle,
 } from 'lucide-react';
 import { InvestigatorStatic, InvestigatorState, SkillType } from '../types';
 import { SkillHighlightedText } from '../utils/textHighlight';
+import {
+  calculateCardBonuses,
+  CombatHandType,
+  CardBonusMode,
+} from '../utils/combatRules';
 import {
   LoreIcon,
   InfluenceIcon,
@@ -53,6 +62,12 @@ export const RerollAndTestSection: React.FC<Props> = ({
   const [diceResults, setDiceResults] = useState<DieResult[]>([]);
   const [hasRolled, setHasRolled] = useState(false);
   const [manualBonusDice, setManualBonusDice] = useState(0);
+
+  // Eldritch Combat Rulings State
+  const [preferredHand, setPreferredHand] = useState<CombatHandType | undefined>(undefined);
+  const [activeMode, setActiveMode] = useState<CardBonusMode>('passive');
+  const [selectedDiscardCardId, setSelectedDiscardCardId] = useState<string | undefined>(undefined);
+  const [selectedOncePerRoundCardId, setSelectedOncePerRoundCardId] = useState<string | undefined>(undefined);
 
   // Calculate equipped bonuses
   const activePossessions = state.possessions.filter((p) => !p.isExhausted);
@@ -102,32 +117,30 @@ export const RerollAndTestSection: React.FC<Props> = ({
   const totalRerollsForTest = cardRerollCount + focusRerollCount;
   const remainingRerolls = Math.max(0, totalRerollsForTest - state.rerollsUsedThisTurn);
 
-  // Calculate dice to roll
+  // Calculate dice to roll enforcing new Eldritch combat & stacking rulings:
+  // - Highest Gain Only (items do NOT stack)
+  // - Weapon and Spell cannot combine in combat
+  // - Discard-to-gain supersedes passive bonuses
+  // - Once-per-round supersedes pure static passive bonuses
   const baseStat = investigator.skills[selectedSkill] || 1;
   const tokenMod = state.skillModifiers[selectedSkill] || 0;
 
-  // Passive stat bonus from items
-  let itemPassiveBonus = 0;
-  activePossessions.forEach((item) => {
-    if (item.statBonus && item.statBonus.skill === selectedSkill) {
-      itemPassiveBonus += item.statBonus.amount;
-    }
+  const bonusResult = calculateCardBonuses({
+    activePossessions: state.possessions,
+    selectedSkill,
+    isCombat: isCombatTest,
+    preferredHand,
+    activeMode,
+    selectedOncePerRoundCardId,
+    selectedDiscardCardId,
   });
 
-  // Combat bonus from weapons
-  let combatBonus = 0;
-  if (isCombatTest) {
-    activePossessions.forEach((item) => {
-      if (item.combatBonus && item.combatBonus.skill === selectedSkill) {
-        combatBonus += item.combatBonus.amount;
-      }
-    });
-  }
+  const cardBonus = bonusResult.finalBonus;
 
   // Situational bonuses (e.g. Leo Anderson on Wilderness space)
   const leoWildernessBonus = state.sameTileAsLeoAnderson ? 1 : 0;
 
-  const totalDice = Math.max(1, baseStat + tokenMod + itemPassiveBonus + combatBonus + leoWildernessBonus + manualBonusDice);
+  const totalDice = Math.max(1, baseStat + tokenMod + cardBonus + leoWildernessBonus + manualBonusDice);
 
   // Success threshold
   const isSuccessValue = (val: number): boolean => {
@@ -416,14 +429,14 @@ export const RerollAndTestSection: React.FC<Props> = ({
         </div>
 
         {/* Combat Encounter Toggle & Bonus Die Adjuster */}
-        <div className="md:col-span-4 flex items-center justify-between md:justify-end gap-3">
+        <div className="md:col-span-4 flex flex-wrap items-center justify-between md:justify-end gap-2">
           <button
             type="button"
             onClick={() => {
               setIsCombatTest(!isCombatTest);
               setHasRolled(false);
             }}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors border ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors border cursor-pointer ${
               isCombatTest
                 ? 'bg-red-900/80 border-red-600 text-white shadow-lg'
                 : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200'
@@ -432,52 +445,105 @@ export const RerollAndTestSection: React.FC<Props> = ({
             <Swords className="w-4 h-4 text-red-400" />
             <span>{isCombatTest ? 'Combat Encounter (On)' : 'Non-Combat Test'}</span>
           </button>
+
+          {/* If Combat is active, allow switching between Weapon and Spell hand (mutually exclusive) */}
+          {isCombatTest && (
+            <div className="flex items-center rounded-lg bg-slate-800 border border-slate-700 p-0.5 text-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  setPreferredHand('weapon');
+                  setHasRolled(false);
+                }}
+                className={`px-2 py-1 rounded flex items-center gap-1 font-bold cursor-pointer transition-colors ${
+                  bonusResult.activeHand === 'weapon'
+                    ? 'bg-amber-700 text-white shadow'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Weapon/Item Hand (weapons & spells cannot combine)"
+              >
+                <Swords className="w-3 h-3" />
+                <span>Weapon (+{bonusResult.highestWeaponBonus})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setPreferredHand('spell');
+                  setHasRolled(false);
+                }}
+                className={`px-2 py-1 rounded flex items-center gap-1 font-bold cursor-pointer transition-colors ${
+                  bonusResult.activeHand === 'spell'
+                    ? 'bg-purple-700 text-white shadow'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="Spell Hand (weapons & spells cannot combine)"
+              >
+                <Wand2 className="w-3 h-3" />
+                <span>Spell (+{bonusResult.highestSpellBonus})</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Mathematical Breakdown of Dice Pool */}
       <div className="bg-slate-900/80 border border-slate-750 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="text-slate-400 uppercase font-semibold">Formula:</span>
-          <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono">
-            Base: {baseStat}
-          </span>
-          {tokenMod !== 0 && (
-            <span className={`px-2 py-0.5 rounded font-mono font-bold ${tokenMod > 0 ? 'bg-slate-700 text-amber-300' : 'bg-rose-950 text-rose-300'}`}>
-              Token: {tokenMod > 0 ? `+${tokenMod}` : tokenMod}
+        <div className="flex flex-col gap-1.5 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-slate-400 uppercase font-semibold">Formula:</span>
+            <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-mono">
+              Base: {baseStat}
             </span>
-          )}
-          {itemPassiveBonus > 0 && (
-            <span className="px-2 py-0.5 rounded bg-amber-950/70 border border-amber-800 text-amber-300 font-mono font-bold">
-              Item: +{itemPassiveBonus}
-            </span>
-          )}
-          {combatBonus > 0 && isCombatTest && (
-            <span className="px-2 py-0.5 rounded bg-red-950/80 border border-red-700 text-red-300 font-mono font-bold">
-              ⚔️ Weapon: +{combatBonus}
-            </span>
-          )}
-          {leoWildernessBonus > 0 && (
-            <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-700 text-emerald-300 font-mono font-bold">
-              Leo Guide: +1
-            </span>
-          )}
-          {manualBonusDice !== 0 && (
-            <span className="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700 text-indigo-300 font-mono font-bold">
-              Extra: {manualBonusDice > 0 ? `+${manualBonusDice}` : manualBonusDice}
-            </span>
-          )}
+            {tokenMod !== 0 && (
+              <span className={`px-2 py-0.5 rounded font-mono font-bold ${tokenMod > 0 ? 'bg-slate-700 text-amber-300' : 'bg-rose-950 text-rose-300'}`}>
+                Token: {tokenMod > 0 ? `+${tokenMod}` : tokenMod}
+              </span>
+            )}
+            {cardBonus > 0 && (
+              <span
+                className={`px-2 py-0.5 rounded border font-mono font-bold flex items-center gap-1 ${
+                  activeMode === 'discard'
+                    ? 'bg-rose-950/80 border-rose-700 text-rose-300'
+                    : activeMode === 'once-per-round'
+                    ? 'bg-indigo-950/80 border-indigo-700 text-indigo-300'
+                    : bonusResult.activeHand === 'spell'
+                    ? 'bg-purple-950/80 border-purple-700 text-purple-300'
+                    : 'bg-red-950/80 border-red-700 text-red-300'
+                }`}
+                title={bonusResult.bonusSourceDescription}
+              >
+                {bonusResult.bonusSourceDescription}
+              </span>
+            )}
+            {leoWildernessBonus > 0 && (
+              <span className="px-2 py-0.5 rounded bg-emerald-950/80 border border-emerald-700 text-emerald-300 font-mono font-bold">
+                Leo Guide: +1
+              </span>
+            )}
+            {manualBonusDice !== 0 && (
+              <span className="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700 text-indigo-300 font-mono font-bold">
+                Extra: {manualBonusDice > 0 ? `+${manualBonusDice}` : manualBonusDice}
+              </span>
+            )}
 
-          {/* Condition modifier badge */}
-          {state.isBlessed && (
-            <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px] font-bold">
-              ✨ Blessed (4, 5, 6 win)
-            </span>
-          )}
-          {state.isCursed && (
-            <span className="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-700 text-[11px] font-bold">
-              ⚠️ Cursed (6 only win)
-            </span>
+            {/* Condition modifier badge */}
+            {state.isBlessed && (
+              <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[11px] font-bold">
+                ✨ Blessed (4, 5, 6 win)
+              </span>
+            )}
+            {state.isCursed && (
+              <span className="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-700 text-[11px] font-bold">
+                ⚠️ Cursed (6 only win)
+              </span>
+            )}
+          </div>
+
+          {bonusResult.supersededDescription && (
+            <div className="text-[11px] text-amber-300 flex items-center gap-1">
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+              <span>{bonusResult.supersededDescription}</span>
+            </div>
           )}
         </div>
 

@@ -43,11 +43,11 @@ function createInitialInvestigatorState(invId: string, customList: InvestigatorS
     actionsTaken: 0,
     maxActions: 2,
     skillModifiers: {
-      lore: 0,
-      influence: 0,
-      observation: 0,
-      strength: 0,
-      will: 0,
+      lore: inv.startingSkillModifiers?.lore ?? 0,
+      influence: inv.startingSkillModifiers?.influence ?? 0,
+      observation: inv.startingSkillModifiers?.observation ?? 0,
+      strength: inv.startingSkillModifiers?.strength ?? 0,
+      will: inv.startingSkillModifiers?.will ?? 0,
     },
     tokens: {
       focus: inv.startingTokens?.focus ?? 0,
@@ -62,7 +62,7 @@ function createInitialInvestigatorState(invId: string, customList: InvestigatorS
     status: 'active',
     sameTileAsLeoAnderson: false,
     isBlessed: false,
-    isCursed: false,
+    isCursed: inv.startingConditions?.includes('condition-cursed') ?? false,
     isPoisoned: false,
     hasLegInjury: false,
   };
@@ -111,11 +111,19 @@ export function useGameState() {
             { id: 'player-1', name: 'Player 1', investigatorId: parsed.activeInvestigatorId || 'leo-anderson' },
           ];
         }
+        if (!parsed.partyInvestigatorIds || !Array.isArray(parsed.partyInvestigatorIds)) {
+          parsed.partyInvestigatorIds = Array.from(new Set(parsed.players.map((p) => p.investigatorId)));
+        } else {
+          parsed.partyInvestigatorIds = Array.from(new Set(parsed.partyInvestigatorIds));
+        }
         if (!parsed.fallenInvestigators) {
           parsed.fallenInvestigators = [];
         }
         if (!parsed.customInvestigators) {
           parsed.customInvestigators = [];
+        }
+        if (!parsed.investigatorStates) {
+          parsed.investigatorStates = {};
         }
         return parsed;
       }
@@ -155,20 +163,18 @@ export function useGameState() {
     );
   }, [gameState.investigatorStates, gameState.activeInvestigatorId, gameState.customInvestigators]);
 
-  // Available DLC filtered investigators & catalog (strictly deduplicated)
+  // Available DLC filtered investigators & catalog (strictly deduplicated & accounting for selected DLCs)
   const enabledInvestigators = useMemo(() => {
-    const list = gameState.allowExpansionProxies
-      ? allInvestigators
-      : allInvestigators.filter((inv) =>
-          gameState.enabledExpansions.includes(inv.expansion || 'core') || inv.isAdHoc
-        );
+    const list = allInvestigators.filter((inv) =>
+      gameState.enabledExpansions.includes(inv.expansion || 'core') || inv.isAdHoc
+    );
     const seen = new Set<string>();
     return list.filter((inv) => {
       if (seen.has(inv.id)) return false;
       seen.add(inv.id);
       return true;
     });
-  }, [allInvestigators, gameState.enabledExpansions, gameState.allowExpansionProxies]);
+  }, [allInvestigators, gameState.enabledExpansions]);
 
   const enabledCards = useMemo(() => {
     return PRESET_POSSESSIONS.filter((card) =>
@@ -870,11 +876,16 @@ export function useGameState() {
     return new Set(gameState.fallenInvestigators.map((f) => f.investigatorId));
   }, [gameState.fallenInvestigators]);
 
-  // Available reserve pool investigators (unique, enabled by DLC, not in party, not fallen)
+  // Available reserve pool investigators (strictly unique, enabled by selected DLCs, not in party, not fallen)
   const availablePoolInvestigators = useMemo(() => {
-    return enabledInvestigators.filter(
-      (inv) => !partyInvIdsSet.has(inv.id) && !fallenInvIdsSet.has(inv.id)
-    );
+    const seen = new Set<string>();
+    return enabledInvestigators.filter((inv) => {
+      if (partyInvIdsSet.has(inv.id) || fallenInvIdsSet.has(inv.id) || seen.has(inv.id)) {
+        return false;
+      }
+      seen.add(inv.id);
+      return true;
+    });
   }, [enabledInvestigators, partyInvIdsSet, fallenInvIdsSet]);
 
   const totalInvestigatorsCount = enabledInvestigators.length;

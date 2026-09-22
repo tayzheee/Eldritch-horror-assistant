@@ -2,7 +2,7 @@ export type SkillType = 'lore' | 'influence' | 'observation' | 'strength' | 'wil
 
 export type TileType = 'city' | 'wilderness' | 'sea';
 
-export type CardType = 'item' | 'weapon' | 'ally' | 'spell' | 'artifact' | 'condition' | 'trinket' | 'service';
+export type CardType = 'item' | 'weapon' | 'ally' | 'spell' | 'artifact' | 'condition' | 'trinket' | 'service' | 'task';
 
 export type ExpansionCode = 'core' | 'fl' | 'mom' | 'sr' | 'utp' | 'soc' | 'td' | 'cir' | 'mon' | 'custom';
 
@@ -58,6 +58,24 @@ export interface PossessionCard {
   flavorText?: string;
   isExhausted?: boolean;
   custom?: boolean;
+  isDiscardToGain?: boolean;
+  discardBonus?: {
+    skill?: SkillType;
+    amount: number;
+    description?: string;
+    isCombatOnly?: boolean;
+  };
+  isOncePerRound?: boolean;
+  oncePerRoundBonus?: {
+    skill?: SkillType;
+    amount: number;
+    description?: string;
+    isCombatOnly?: boolean;
+  };
+  traits?: string[];
+  category?: string;
+  isUnique?: boolean;
+  rulings?: string;
 }
 
 export interface DefeatEncounter {
@@ -69,6 +87,8 @@ export interface InvestigatorStatic {
   id: string;
   name: string;
   title: string;
+  occupation?: string;
+  role?: string;
   quote: string;
   expansion?: ExpansionCode;
   health: number;
@@ -77,6 +97,9 @@ export interface InvestigatorStatic {
   startingLocation: string;
   startingTileType: TileType;
   startingPossessions: PossessionCard[];
+  startingPossessionsSummary?: string;
+  startingSkillModifiers?: Partial<Record<SkillType, number>>;
+  startingConditions?: string[];
   startingTokens?: {
     focus?: number;
     resources?: number;
