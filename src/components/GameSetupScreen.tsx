@@ -10,7 +10,8 @@ import {
   Layers,
   ChevronRight,
   Shuffle,
-  ArrowLeft
+  ArrowLeft,
+  BookOpen
 } from 'lucide-react';
 import {
   ExpansionCode,
@@ -26,9 +27,11 @@ interface Props {
   enabledExpansions: ExpansionCode[];
   allInvestigators: InvestigatorStatic[];
   allowExpansionProxies?: boolean;
+  enablePersonalStories?: boolean;
   onToggleExpansion: (code: ExpansionCode) => void;
   onSetEnabledExpansions: (codes: ExpansionCode[]) => void;
   onToggleAllowExpansionProxies?: () => void;
+  onTogglePersonalStories?: () => void;
   onAddPlayer: (customName?: string) => void;
   onRemovePlayer: (playerId: string) => void;
   onUpdatePlayer: (playerId: string, updates: Partial<PlayerSlot>) => void;
@@ -41,9 +44,11 @@ export const GameSetupScreen: React.FC<Props> = ({
   enabledExpansions,
   allInvestigators,
   allowExpansionProxies = false,
+  enablePersonalStories = false,
   onToggleExpansion,
   onSetEnabledExpansions,
   onToggleAllowExpansionProxies,
+  onTogglePersonalStories,
   onAddPlayer,
   onRemovePlayer,
   onUpdatePlayer,
@@ -203,6 +208,23 @@ export const GameSetupScreen: React.FC<Props> = ({
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
+                {/* Personal Stories Toggle Button */}
+                {onTogglePersonalStories && (
+                  <button
+                    type="button"
+                    onClick={onTogglePersonalStories}
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-serif font-bold transition-all border ${
+                      enablePersonalStories
+                        ? 'bg-amber-950/90 border-amber-500 text-amber-200 shadow-sm ring-1 ring-amber-500/40'
+                        : 'bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-slate-200 border-slate-700'
+                    }`}
+                    title="Enable investigator-specific Personal Stories quest cards with rewards and consequences"
+                  >
+                    <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Personal Stories: {enablePersonalStories ? 'ENABLED' : 'OFF'}</span>
+                  </button>
+                )}
+
                 {/* Proxy Mode Toggle Button */}
                 {onToggleAllowExpansionProxies && (
                   <button
@@ -240,6 +262,18 @@ export const GameSetupScreen: React.FC<Props> = ({
                 )}
               </div>
             </div>
+
+            {/* Explanatory banner if Personal Stories are active */}
+            {enablePersonalStories && (
+              <div className="p-3 bg-amber-950/40 border border-amber-800/70 rounded-xl text-xs text-amber-200 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <span>
+                    <strong>Personal Stories Enabled:</strong> Each investigator has a unique quest card with specific pass/fail objectives, custom rewards, and consequences accessible on their investigator profile.
+                  </span>
+                </div>
+              </div>
+            )}
 
             {/* Explanatory banner if Proxy Mode is active */}
             {allowExpansionProxies && (

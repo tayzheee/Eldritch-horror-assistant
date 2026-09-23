@@ -29,7 +29,7 @@ interface Props {
   onToggleExhaust: (id: string) => void;
 }
 
-type FilterCategory = 'all' | 'items' | 'trinkets' | 'tasks' | 'allies' | 'services' | 'spells' | 'conditions';
+type FilterCategory = 'all' | 'items' | 'trinkets' | 'tasks' | 'allies' | 'services' | 'spells' | 'incantations' | 'rituals' | 'glamours' | 'conditions';
 
 export const PossessionsPanel: React.FC<Props> = ({
   possessions,
@@ -110,6 +110,9 @@ export const PossessionsPanel: React.FC<Props> = ({
 
     // Category check
     if (selectedCategory === 'spells' && card.type !== 'spell') return false;
+    if (selectedCategory === 'incantations' && (card.type !== 'spell' || (!card.category?.toLowerCase().includes('incantation') && !card.traits?.includes('Incantation')))) return false;
+    if (selectedCategory === 'rituals' && (card.type !== 'spell' || (!card.category?.toLowerCase().includes('ritual') && !card.traits?.includes('Ritual')))) return false;
+    if (selectedCategory === 'glamours' && (card.type !== 'spell' || (!card.category?.toLowerCase().includes('glamour') && !card.traits?.includes('Glamour')))) return false;
     if (selectedCategory === 'services' && card.type !== 'service') return false;
     if (selectedCategory === 'allies' && card.type !== 'ally') return false;
     if (selectedCategory === 'conditions' && card.type !== 'condition') return false;
@@ -148,6 +151,9 @@ export const PossessionsPanel: React.FC<Props> = ({
     allies: poolCards.filter((c) => c.type === 'ally').length,
     services: poolCards.filter((c) => c.type === 'service').length,
     spells: poolCards.filter((c) => c.type === 'spell').length,
+    incantations: poolCards.filter((c) => c.type === 'spell' && (c.category?.toLowerCase().includes('incantation') || c.traits?.includes('Incantation'))).length,
+    rituals: poolCards.filter((c) => c.type === 'spell' && (c.category?.toLowerCase().includes('ritual') || c.traits?.includes('Ritual'))).length,
+    glamours: poolCards.filter((c) => c.type === 'spell' && (c.category?.toLowerCase().includes('glamour') || c.traits?.includes('Glamour'))).length,
     conditions: poolCards.filter((c) => c.type === 'condition').length,
   };
 
@@ -520,7 +526,10 @@ export const PossessionsPanel: React.FC<Props> = ({
                     { id: 'tasks', label: 'Tasks' },
                     { id: 'allies', label: 'Allies' },
                     { id: 'services', label: 'Services' },
-                    { id: 'spells', label: 'Spells' },
+                    { id: 'spells', label: 'All Spells' },
+                    { id: 'incantations', label: 'Incantations' },
+                    { id: 'rituals', label: 'Rituals' },
+                    { id: 'glamours', label: 'Glamours' },
                     { id: 'conditions', label: 'Conditions' },
                   ] as { id: FilterCategory; label: string }[]
                 ).map((cat) => {

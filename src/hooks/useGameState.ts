@@ -10,8 +10,9 @@ import {
   FallenInvestigator,
   InvestigatorStatic,
 } from '../types';
-import { INVESTIGATORS } from '../data/investigators';
+import { INVESTIGATORS, getPossession } from '../data/investigators';
 import { PRESET_POSSESSIONS } from '../data/possessionsCatalog';
+import { getPersonalStory, StoryStatus } from '../data/personalStories';
 
 const STORAGE_KEY = 'eldritch_horror_tracker_state_v3';
 
@@ -65,6 +66,10 @@ function createInitialInvestigatorState(invId: string, customList: InvestigatorS
     isCursed: inv.startingConditions?.includes('condition-cursed') ?? false,
     isPoisoned: false,
     hasLegInjury: false,
+    personalStoryProgress: {
+      status: 'in_progress',
+      currentCount: 0,
+    },
   };
 }
 
@@ -88,6 +93,7 @@ function getDefaultGameState(): GameState {
     players: defaultPlayers,
     isGameSetupComplete: false, // Show setup screen first on fresh launch
     fallenInvestigators: [],
+    enablePersonalStories: false,
   };
 }
 
@@ -101,6 +107,20 @@ export function useGameState() {
         INVESTIGATORS.forEach((inv) => {
           if (!parsed.investigatorStates[inv.id]) {
             parsed.investigatorStates[inv.id] = createInitialInvestigatorState(inv.id);
+          }
+        });
+
+        // Upgrade any stale or un-hydrated possessions in existing saved states
+        Object.keys(parsed.investigatorStates).forEach((invId) => {
+          const invState = parsed.investigatorStates[invId];
+          if (invState && Array.isArray(invState.possessions)) {
+            invState.possessions = invState.possessions.map((p) => {
+              const matched = getPossession(p.id);
+              if (matched && (p.effectText === 'Starting item.' || !p.expansion || !p.category || matched.type === 'spell' && p.type !== 'spell')) {
+                return { ...matched, isExhausted: p.isExhausted ?? false };
+              }
+              return p;
+            });
           }
         });
         if (!parsed.enabledExpansions || parsed.enabledExpansions.length === 0) {
@@ -867,6 +887,92 @@ export function useGameState() {
     });
   }, []);
 
+  // ==========================================
+  // PERSONAL STORIES CONTROLS
+  // ==========================================
+  const togglePersonalStories = useCallback(() => {
+    setGameState((prev) => ({
+      ...prev,
+      enablePersonalStories: !prev.enablePersonalStories,
+    }));
+  }, []);
+
+  const updatePersonalStoryStatus = useCallback((status: StoryStatus, targetInvId?: string) => {
+    setGameState((prev) => {
+      const invId = targetInvId || prev.activeInvestigatorId;
+      const current = prev.investigatorStates[invId];
+      if (!current) return prev;
+      const currentProgress = current.personalStoryProgress || {
+        status: 'in_progress',
+        currentCount: 0,
+      };
+      return {
+        ...prev,
+        investigatorStates: {
+          ...prev.investigatorStates,
+          [invId]: {
+            ...current,
+            personalStoryProgress: {
+              ...currentProgress,
+              status,
+            },
+          },
+        },
+      };
+    });
+  }, []);
+
+  const updatePersonalStoryCount = useCallback((delta: number, targetInvId?: string) => {
+    setGameState((prev) => {
+      const invId = targetInvId || prev.activeInvestigatorId;
+      const current = prev.investigatorStates[invId];
+      if (!current) return prev;
+      const currentProgress = current.personalStoryProgress || {
+        status: 'in_progress',
+        currentCount: 0,
+      };
+      const newCount = Math.max(0, (currentProgress.currentCount || 0) + delta);
+      return {
+        ...prev,
+        investigatorStates: {
+          ...prev.investigatorStates,
+          [invId]: {
+            ...current,
+            personalStoryProgress: {
+              ...currentProgress,
+              currentCount: newCount,
+            },
+          },
+        },
+      };
+    });
+  }, []);
+
+  const setPersonalStoryCount = useCallback((count: number, targetInvId?: string) => {
+    setGameState((prev) => {
+      const invId = targetInvId || prev.activeInvestigatorId;
+      const current = prev.investigatorStates[invId];
+      if (!current) return prev;
+      const currentProgress = current.personalStoryProgress || {
+        status: 'in_progress',
+        currentCount: 0,
+      };
+      return {
+        ...prev,
+        investigatorStates: {
+          ...prev.investigatorStates,
+          [invId]: {
+            ...current,
+            personalStoryProgress: {
+              ...currentProgress,
+              currentCount: Math.max(0, count),
+            },
+          },
+        },
+      };
+    });
+  }, []);
+
   // Total counts and reserve pool strictly accounting for selected DLCs & active/fallen investigators
   const partyInvIdsSet = useMemo(() => {
     return new Set(gameState.partyInvestigatorIds);
@@ -914,6 +1020,11 @@ export function useGameState() {
     // Setup controls
     finishGameSetup,
     reopenGameSetup,
+    // Personal stories controls
+    togglePersonalStories,
+    updatePersonalStoryStatus,
+    updatePersonalStoryCount,
+    setPersonalStoryCount,
     // Player slots controls
     addPlayerSlot,
     removePlayerSlot,

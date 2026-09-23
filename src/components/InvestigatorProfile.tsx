@@ -8,9 +8,12 @@ import {
   Dices,
   Sparkles,
   RotateCcw,
-  Skull
+  Skull,
+  BookOpen
 } from 'lucide-react';
 import { InvestigatorState, InvestigatorStatic, SkillType } from '../types';
+import { StoryStatus } from '../data/personalStories';
+import { PersonalStoryTab } from './PersonalStoryTab';
 import { InvestigatorPortrait } from './InvestigatorPortrait';
 import {
   HealthIcon,
@@ -41,6 +44,12 @@ interface Props {
   onResetInvestigator: () => void;
   onResolveDefeat?: () => void;
   onOpenDeathModal?: () => void;
+  onUpdateStoryStatus?: (status: StoryStatus) => void;
+  onUpdateStoryCount?: (delta: number) => void;
+  onSetStoryCount?: (count: number) => void;
+  onApplyStoryReward?: () => void;
+  onApplyStoryConsequence?: () => void;
+  enablePersonalStories?: boolean;
 }
 
 export const InvestigatorProfile: React.FC<Props> = ({
@@ -56,8 +65,21 @@ export const InvestigatorProfile: React.FC<Props> = ({
   onResetInvestigator,
   onResolveDefeat,
   onOpenDeathModal,
+  onUpdateStoryStatus,
+  onUpdateStoryCount,
+  onSetStoryCount,
+  onApplyStoryReward,
+  onApplyStoryConsequence,
+  enablePersonalStories = true,
 }) => {
-  const [activeTab, setActiveTab] = useState<'front' | 'back'>('front');
+  const [activeTab, setActiveTab] = useState<'front' | 'back' | 'story'>('front');
+
+  // If personal stories get turned off while viewing story tab, revert to front
+  React.useEffect(() => {
+    if (!enablePersonalStories && activeTab === 'story') {
+      setActiveTab('front');
+    }
+  }, [enablePersonalStories, activeTab]);
 
   // Auto-scroll to Death & Succession table once defeat is detected
   const isDefeated = state.currentHealth <= 0 || state.currentSanity <= 0;
@@ -237,6 +259,7 @@ export const InvestigatorProfile: React.FC<Props> = ({
             <InvestigatorPortrait
               investigatorId={investigator.id}
               name={investigator.name}
+              imageUrl={investigator.imageUrl}
               className="w-full h-full"
             />
             <div className="absolute inset-0 border-2 border-amber-500/20 rounded-xl pointer-events-none" />
@@ -272,35 +295,62 @@ export const InvestigatorProfile: React.FC<Props> = ({
               </p>
             </div>
 
-            {/* CARD FRONT / CARD BACK Toggle Buttons */}
-            <div className="flex items-center gap-2 mt-4">
+            {/* CARD FRONT / CARD BACK / PERSONAL STORIES Toggle Buttons */}
+            <div className="flex flex-wrap items-center gap-2 mt-4">
               <button
+                type="button"
                 onClick={() => setActiveTab('front')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider transition-colors shadow-sm ${
                   activeTab === 'front'
                     ? 'bg-blue-600 text-white shadow-blue-900/40'
-                    : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200'
+                    : 'bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Card Front
               </button>
               <button
+                type="button"
                 onClick={() => setActiveTab('back')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider transition-colors shadow-sm ${
                   activeTab === 'back'
                     ? 'bg-blue-600 text-white shadow-blue-900/40'
-                    : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200'
+                    : 'bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-slate-200'
                 }`}
               >
                 Card Back
               </button>
+              {enablePersonalStories && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('story')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider transition-all shadow-sm border ${
+                    activeTab === 'story'
+                      ? 'bg-amber-600 border-amber-500 text-slate-950 font-black shadow-amber-950/50'
+                      : state.personalStoryProgress?.status === 'passed'
+                      ? 'bg-emerald-950/60 border-emerald-600/70 text-emerald-300 hover:bg-emerald-900/60'
+                      : state.personalStoryProgress?.status === 'failed'
+                      ? 'bg-rose-950/60 border-rose-600/70 text-rose-300 hover:bg-rose-900/60'
+                      : 'bg-slate-800 hover:bg-slate-750 text-amber-400/90 hover:text-amber-300 border-slate-700'
+                  }`}
+                  title="View personal story quest, rewards, and consequences"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Personal Stories</span>
+                  {state.personalStoryProgress?.status === 'passed' && (
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  )}
+                  {state.personalStoryProgress?.status === 'failed' && (
+                    <span className="w-2 h-2 rounded-full bg-rose-400" />
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Tab Content */}
-      {activeTab === 'front' ? (
+      {activeTab === 'front' && (
         <div className="p-5 space-y-5">
           {/* Defeat / Death Warning Banner */}
           {(state.currentHealth <= 0 || state.currentSanity <= 0) && (
@@ -691,8 +741,10 @@ export const InvestigatorProfile: React.FC<Props> = ({
             </div>
           </div>
         </div>
-      ) : (
-        /* CARD BACK: Lore, Starting Possessions, Backstory */
+      )}
+
+      {/* CARD BACK: Lore, Starting Possessions, Backstory */}
+      {activeTab === 'back' && (
         <div className="p-6 space-y-5 bg-gradient-to-b from-[#162036] to-[#0f172a]">
           <div className="border-b border-slate-700/80 pb-4">
             <h3 className="font-serif text-xl font-bold text-amber-200">Investigator Dossier</h3>
@@ -801,6 +853,19 @@ export const InvestigatorProfile: React.FC<Props> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {/* Personal Stories Tab */}
+      {enablePersonalStories && activeTab === 'story' && (
+        <PersonalStoryTab
+          investigator={investigator}
+          state={state}
+          onUpdateStoryStatus={(status) => onUpdateStoryStatus?.(status)}
+          onUpdateStoryCount={(delta) => onUpdateStoryCount?.(delta)}
+          onSetStoryCount={(count) => onSetStoryCount?.(count)}
+          onApplyRewardEffects={onApplyStoryReward}
+          onApplyConsequenceEffects={onApplyStoryConsequence}
+        />
       )}
     </div>
   );

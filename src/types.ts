@@ -98,6 +98,7 @@ export interface InvestigatorStatic {
   startingTileType: TileType;
   startingPossessions: PossessionCard[];
   startingPossessionsSummary?: string;
+  imageUrl?: string;
   startingSkillModifiers?: Partial<Record<SkillType, number>>;
   startingConditions?: string[];
   startingTokens?: {
@@ -152,6 +153,11 @@ export interface InvestigatorState {
   isCursed?: boolean;
   isPoisoned?: boolean;
   hasLegInjury?: boolean;
+  personalStoryProgress?: {
+    status: 'in_progress' | 'passed' | 'failed';
+    currentCount: number;
+    notes?: string;
+  };
 }
 
 export interface PlayerSlot {
@@ -184,4 +190,5 @@ export interface GameState {
   fallenInvestigators: FallenInvestigator[];
   customInvestigators?: InvestigatorStatic[];
   allowExpansionProxies?: boolean;
+  enablePersonalStories?: boolean;
 }

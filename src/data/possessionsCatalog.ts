@@ -1,4 +1,5 @@
 import { PossessionCard, ExpansionCode } from '../types';
+import { OFFICIAL_SPELLS } from './officialSpells';
 
 export const getCardExpansion = (card: PossessionCard): ExpansionCode => card.expansion || 'core';
 
@@ -2140,11 +2141,13 @@ export const PRESET_POSSESSIONS: PossessionCard[] = [
   {
     "id": "holy-cross",
     "name": "Holy Cross",
-    "type": "item",
-    "category": "Item",
+    "type": "trinket",
+    "category": "Trinket — Relic",
     "expansion": "core",
+    "traits": ["Relic"],
     "isUnique": false,
     "effectText": "Gain +2 Will during Combat Encounters.",
+    "flavorText": "A sanctified talisman blessed by the clergy of Saint Jude.",
     "combatBonus": {
       "amount": 2,
       "skill": "will"
@@ -2620,11 +2623,13 @@ export const PRESET_POSSESSIONS: PossessionCard[] = [
   {
     "id": "sledgehammer",
     "name": "Sledgehammer",
-    "type": "item",
-    "category": "Item",
+    "type": "weapon",
+    "category": "Item — Weapon",
     "expansion": "utp",
+    "traits": ["Weapon"],
     "isUnique": false,
     "effectText": "Gain +1 Strength. Gain +2 Strength during Combat Encounters.",
+    "flavorText": "Heavy, unwieldy, but devastating against thick chitin and bone.",
     "statBonus": {
       "amount": 1,
       "skill": "strength"
@@ -4701,281 +4706,7 @@ export const PRESET_POSSESSIONS: PossessionCard[] = [
     "isDiscardToGain": false,
     "isOncePerRound": false
   },
-  {
-    "id": "spell-wither",
-    "name": "Wither",
-    "type": "spell",
-    "cost": 2,
-    "combatBonus": {
-      "skill": "lore",
-      "amount": 3
-    },
-    "effectText": "Combat Spell: Gain +3 Lore during Combat Encounters.\nTest Lore -1; on pass, target Monster loses 2 toughness.",
-    "flavorText": "A blackened invocation that drains the vitality of alien flesh."
-  },
-  {
-    "id": "spell-shrivelling",
-    "name": "Shrivelling",
-    "type": "spell",
-    "cost": 3,
-    "combatBonus": {
-      "skill": "lore",
-      "amount": 5
-    },
-    "rerollsGranted": {
-      "skill": "lore",
-      "amount": 2,
-      "description": "Spend 1 Sanity to reroll up to 2 dice.",
-      "isCombatOnly": true
-    },
-    "effectText": "Combat Spell: Gain +5 Lore during Combat Encounters.\nYou may spend 1 Sanity to reroll 2 dice.",
-    "flavorText": "Blue eldritch flames twist around your fingertips, scorching everything in their path."
-  },
-  {
-    "id": "spell-clairvoyance",
-    "name": "Clairvoyance",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Incantation Spell: Test Lore.\nIf you pass, spawn 1 Clue on your space, or look at the top 3 cards of the Mythos or Encounter deck.",
-    "flavorText": "Your third eye opens across the gulf of time and cosmic geometry."
-  },
-  {
-    "id": "spell-healing-words",
-    "name": "Healing Words",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Incantation Spell: Test Lore.\nOn pass, you or another investigator on your space recovers up to 2 Health.",
-    "flavorText": "Syllables of primordial renewal knit muscle and mend broken bone."
-  },
-  {
-    "id": "spell-instill-courage",
-    "name": "Instill Courage",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Incantation Spell: Test Lore.\nOn pass, you or another investigator on your space recovers up to 2 Sanity.",
-    "flavorText": "Harmonious tones dispel shadows and calm the shrieking terror within."
-  },
-  {
-    "id": "spell-binding",
-    "name": "Binding",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Ritual Spell: Test Lore -1.\nOn pass, choose a Monster on your space; that Monster cannot deal damage to investigators this round.",
-    "flavorText": "Invisible occult chains hold the entity rigid against the earth."
-  },
-  {
-    "id": "spell-body-shield",
-    "name": "Body Shield",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Incantation Spell: When you would suffer physical damage, test Lore.\nPrevent 1 damage for each success rolled.",
-    "flavorText": "A hardened translucent barrier of arcane force deflects talons and projectile fire."
-  },
-  {
-    "id": "spell-spectral-razer",
-    "name": "Spectral Razer",
-    "type": "spell",
-    "cost": 3,
-    "combatBonus": {
-      "skill": "lore",
-      "amount": 4
-    },
-    "rerollsGranted": {
-      "skill": "lore",
-      "amount": 1,
-      "description": "Reroll 1 die when attacking with Spectral Razer.",
-      "isCombatOnly": true
-    },
-    "effectText": "Combat Spell: Gain +4 Lore during Combat Encounters.\nYou may reroll 1 die when attacking with this spell.",
-    "flavorText": "Blades of razor psychic energy slice through dimensional folds."
-  },
-  {
-    "id": "spell-storm-of-the-soul",
-    "name": "Storm of the Soul",
-    "type": "spell",
-    "cost": 3,
-    "combatBonus": {
-      "skill": "lore",
-      "amount": 4
-    },
-    "effectText": "Ritual Spell: Test Lore -2.\nOn pass, deal 3 damage to every Monster on your space.",
-    "flavorText": "A tempest of psychic resonance shatters monstrous consciousness."
-  },
-  {
-    "id": "spell-voice-of-ra",
-    "name": "Voice of Ra",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Glamour Spell: Pay 1 Sanity to add +1 to the result of every die rolled on your next test.\nReckoning: Test Lore; on fail, discard this card.",
-    "flavorText": "Sunlit glory echoes through your spoken commands, bending reality."
-  },
-  {
-    "id": "spell-astral-travel",
-    "name": "Astral Travel",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Ritual Spell: Test Lore.\nOn pass, you may instantly move to any space containing a Gate or a Clue token.",
-    "flavorText": "Your spirit detaches from flesh and traverses the astral slipstreams."
-  },
-  {
-    "id": "spell-poison-mist",
-    "name": "Poison Mist",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Ritual Spell: Test Lore -1.\nOn pass, all Monsters on your space lose 1 toughness.",
-    "flavorText": "Emerald vapors seep along the ground, dissolving unnatural physiology."
-  },
-  {
-    "id": "spell-mystical-insight",
-    "name": "Mystical Insight",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Incantation Spell: Test Lore.\nOn pass, gain 1 Clue and 1 Focus token.",
-    "flavorText": "Veiled truths of the cosmos align into clear crystalline understanding."
-  },
-  {
-    "id": "fl-bind-monster",
-    "name": "Bind Monster",
-    "type": "spell",
-    "expansion": "fl",
-    "cost": 2,
-    "effectText": "Action: Test Lore -1. On pass, exhaust 1 Non-Epic Monster on your space; that monster cannot attack this round.",
-    "flavorText": "Chants that tie spectral ropes around eldritch jaws and tendrils."
-  },
-  {
-    "id": "sr-glamour-spell",
-    "name": "Glamour of Youth",
-    "type": "spell",
-    "expansion": "sr",
-    "cost": 2,
-    "statBonus": {
-      "skill": "influence",
-      "amount": 2
-    },
-    "effectText": "Gain +2 Influence.\nWhen acquiring assets, you may reroll up to 2 dice.",
-    "flavorText": "Whispered incantations masking the signs of fatigue, madness, and advancing decay."
-  },
-  {
-    "id": "soc-song-of-cassilda",
-    "name": "Song of Cassilda",
-    "type": "spell",
-    "expansion": "soc",
-    "cost": 3,
-    "combatBonus": {
-      "skill": "lore",
-      "amount": 4
-    },
-    "effectText": "Gain +4 Lore in Combat.\nIf you pass by 2 or more successes, the target Monster is immediately discarded.",
-    "flavorText": "Chords that echo across Lake Hali beneath twin black suns."
-  },
-  {
-    "id": "mists-of-releh",
-    "name": "Mists of Releh",
-    "type": "spell",
-    "cost": 1,
-    "statBonus": {
-      "skill": "observation",
-      "amount": 1
-    },
-    "effectText": "Lore test: Move through or evade Monsters on your space without encountering them.",
-    "flavorText": "A dense silvery fog billows from the floor, blinding enemies and veiling footsteps."
-  },
-  {
-    "id": "flesh-ward",
-    "name": "Flesh Ward",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Lore test: When you or an investigator on your space would lose Health, prevent up to 2 Health loss.",
-    "flavorText": "An invisible barrier of pressurized eldritch energy deadens impacts and turns bladed weapons."
-  },
-  {
-    "id": "spell-shriveling",
-    "name": "Shriveling",
-    "type": "spell",
-    "cost": 2,
-    "combatBonus": {
-      "skill": "strength",
-      "amount": 3
-    },
-    "effectText": "Lore test: Gain +3 Strength during a Combat Encounter.",
-    "flavorText": "Black lightning shoots from your outstretched fingers, withering muscle and bone to dust."
-  },
-  {
-    "id": "inner-strength",
-    "name": "Inner Strength",
-    "type": "spell",
-    "cost": 1,
-    "statBonus": {
-      "skill": "will",
-      "amount": 1
-    },
-    "effectText": "Lore test: Recover 1 Health and gain +2 Strength until end of turn.",
-    "flavorText": "Channeled chi calms the beating heart, knitting flesh and steadying trembling limbs."
-  },
-  {
-    "id": "feed-the-mind",
-    "name": "Feed the Mind",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Lore test: Gain 1 Clue token or improve 1 skill of choice; lose 1 Sanity if you fail.",
-    "flavorText": "Opening your consciousness to cosmic transmissions, absorbing secrets not meant for mortals."
-  },
-  {
-    "id": "storm-of-spirits",
-    "name": "Storm of Spirits",
-    "type": "spell",
-    "cost": 2,
-    "combatBonus": {
-      "skill": "strength",
-      "amount": 4
-    },
-    "effectText": "Lore test: Deal 4 damage to a Monster or divide among monsters on your space.",
-    "flavorText": "Howling ethereal phantoms descend from the vortex, tearing at physical and spectral foes."
-  },
-  {
-    "id": "arcane-insight",
-    "name": "Arcane Insight",
-    "type": "spell",
-    "cost": 1,
-    "effectText": "Lore test: Roll 2 additional dice when resolving Research Encounters.",
-    "flavorText": "Hidden patterns emerge from faded inks, revealing truths long veiled from the eyes of man."
-  },
-  {
-    "id": "banishment",
-    "name": "Banishment",
-    "type": "spell",
-    "cost": 2,
-    "effectText": "Lore test: Return 1 non-Epic Monster on your space to the monster cup.",
-    "flavorText": "Speaking ancient sumerian words of castigation, opening an abyss that swallows the fiend."
-  },
-  {
-    "id": "find-gate",
-    "name": "Find Gate",
-    "type": "spell",
-    "cost": 1,
-    "effectText": "Lore test: Immediately move to any space on the game board containing a Gate.",
-    "flavorText": "Following gravitational ripples in spacetime directly toward active dimensional tears."
-  },
-  {
-    "id": "call-the-storm",
-    "name": "Call the Storm",
-    "type": "spell",
-    "cost": 2,
-    "combatBonus": {
-      "skill": "strength",
-      "amount": 3
-    },
-    "effectText": "Lore test: Deal 3 damage to all Monsters on your space.",
-    "flavorText": "Thunderclouds coalesce in moments, discharging blinding bolts of ozone-scented fury."
-  },
-  {
-    "id": "instill-bravery",
-    "name": "Instill Bravery",
-    "type": "spell",
-    "cost": 1,
-    "effectText": "Lore test: Restore 2 Sanity to an investigator on your space and remove 1 Terror or Madness condition.",
-    "flavorText": "A soothing resonant intonation that dispels terror and re-anchors fractured minds."
-  },
+  ...OFFICIAL_SPELLS,
   {
     "id": "condition-blessed",
     "name": "Blessed",

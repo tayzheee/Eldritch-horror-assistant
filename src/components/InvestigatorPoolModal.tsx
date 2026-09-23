@@ -328,6 +328,7 @@ export const InvestigatorPoolModal: React.FC<Props> = ({
                       <InvestigatorPortrait
                         investigatorId={inv.id}
                         name={inv.name}
+                        imageUrl={inv.imageUrl}
                         className="w-full h-full"
                       />
                       {isActive && (

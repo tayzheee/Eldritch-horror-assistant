@@ -11,6 +11,7 @@ import { DeathSuccessionModal } from './components/DeathSuccessionModal';
 import { InvestigatorPoolModal } from './components/InvestigatorPoolModal';
 import { TestCalculatorModal } from './components/TestCalculatorModal';
 import { SkillType } from './types';
+import { applyStoryReward, applyStoryConsequence } from './data/personalStoryEffects';
 
 export default function App() {
   const {
@@ -29,6 +30,11 @@ export default function App() {
     toggleAllowExpansionProxies,
     finishGameSetup,
     reopenGameSetup,
+    // Personal stories
+    togglePersonalStories,
+    updatePersonalStoryStatus,
+    updatePersonalStoryCount,
+    setPersonalStoryCount,
     // Player slots
     addPlayerSlot,
     removePlayerSlot,
@@ -97,9 +103,11 @@ export default function App() {
         enabledExpansions={gameState.enabledExpansions}
         allInvestigators={allInvestigators}
         allowExpansionProxies={gameState.allowExpansionProxies}
+        enablePersonalStories={gameState.enablePersonalStories}
         onToggleExpansion={toggleExpansion}
         onSetEnabledExpansions={setEnabledExpansions}
         onToggleAllowExpansionProxies={toggleAllowExpansionProxies}
+        onTogglePersonalStories={togglePersonalStories}
         onAddPlayer={addPlayerSlot}
         onRemovePlayer={removePlayerSlot}
         onUpdatePlayer={updatePlayerSlot}
@@ -155,6 +163,28 @@ export default function App() {
               onOpenTestCalculator={handleOpenTestCalculator}
               onResetInvestigator={resetCurrentInvestigator}
               onOpenDeathModal={() => setIsDeathModalOpen(true)}
+              onUpdateStoryStatus={(status) => updatePersonalStoryStatus(status)}
+              onUpdateStoryCount={(delta) => updatePersonalStoryCount(delta)}
+              onSetStoryCount={(count) => setPersonalStoryCount(count)}
+              enablePersonalStories={gameState.enablePersonalStories}
+              onApplyStoryReward={() => {
+                applyStoryReward({
+                  investigatorId: activeInvestigator.id,
+                  updateHealth,
+                  updateSanity,
+                  updateSkillModifier,
+                  updateToken,
+                });
+              }}
+              onApplyStoryConsequence={() => {
+                applyStoryConsequence({
+                  investigatorId: activeInvestigator.id,
+                  updateHealth,
+                  updateSanity,
+                  updateSkillModifier,
+                  updateToken,
+                });
+              }}
             />
           </section>
 

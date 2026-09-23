@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Props {
   investigatorId: string;
   name: string;
+  imageUrl?: string;
   className?: string;
 }
 
-export const InvestigatorPortrait: React.FC<Props> = ({ investigatorId, name, className = '' }) => {
+export const InvestigatorPortrait: React.FC<Props> = ({ investigatorId, name, imageUrl, className = '' }) => {
+  const [resolvedSrc, setResolvedSrc] = useState<string | null>(null);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+    if (imageUrl) {
+      setResolvedSrc(imageUrl);
+    } else {
+      setResolvedSrc(`/investigators/${investigatorId}.png`);
+    }
+  }, [investigatorId, imageUrl]);
+
+  // If an image source is active and hasn't errored out, render the real photograph/artwork
+  if (resolvedSrc && !hasError) {
+    return (
+      <div className={`relative overflow-hidden bg-slate-950 select-none group ${className}`}>
+        <img
+          src={resolvedSrc}
+          alt={name}
+          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          onError={() => {
+            // Cascade through .png -> .jpg -> .webp before falling back to SVG
+            if (resolvedSrc.endsWith('.png')) {
+              setResolvedSrc(`/investigators/${investigatorId}.jpg`);
+            } else if (resolvedSrc.endsWith('.jpg')) {
+              setResolvedSrc(`/investigators/${investigatorId}.webp`);
+            } else {
+              setHasError(true);
+            }
+          }}
+        />
+        {/* Subtle horror vignette overlay */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-slate-950/70 via-transparent to-black/20" />
+      </div>
+    );
+  }
+
   // If Leo Anderson, draw the exact atmospheric expedition leader with jungle backdrop, weathered hat/jacket
   if (investigatorId === 'leo-anderson') {
     return (

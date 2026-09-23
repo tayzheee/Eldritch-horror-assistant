@@ -1,0 +1,929 @@
+{
+  "akachi-onyele": {
+    "investigatorId": "akachi-onyele",
+    "investigatorName": "Akachi Onyele",
+    "storyTitle": "Guardian of the Veil",
+    "passCondition": "When you close a Gate during an Other World Encounter, place that Gate here; then pass if 3 Gates are here.",
+    "failCondition": "Doom advances to 6 or lower.",
+    "reward": {
+      "title": "The Earth Speaks",
+      "effect": "When you gain this card, improve Lore and Will.\nWhen you close a Gate during an Other World Encounter, spawn 2 Clues."
+    },
+    "consequence": {
+      "title": "The Earth's Anger",
+      "effect": "When you gain this card, spawn 1 Gate.\nAfter resolving an Other World Encounter, if you did not discard that Gate, discard the nearest Clue on the game board."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Gates Placed",
+    "trackType": "gates"
+  },
+  "charlie-kane": {
+    "investigatorId": "charlie-kane",
+    "investigatorName": "Charlie Kane",
+    "storyTitle": "Citizen Kane",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "Doom advances to 6 or lower.",
+    "reward": {
+      "title": "Kane for Office",
+      "effect": "When you gain this card, improve Influence and Will.\nOnce per round, when Doom advances, you may spend 2 Clues to retreat Doom by 1."
+    },
+    "consequence": {
+      "title": "Dark Times",
+      "effect": "When you perform an Acquire Assets Action, increase the value of each card in the reserve by 1."
+    }
+  },
+  "diana-stanley": {
+    "investigatorId": "diana-stanley",
+    "investigatorName": "Diana Stanley",
+    "storyTitle": "Bound by the Past",
+    "passCondition": "When you discard a Monster as part of your action ability, you may place it here; then pass if Monsters here total toughness 8+.",
+    "failCondition": "At Encounter Phase end, 3+ Cultist Monsters are on the game board.",
+    "reward": {
+      "title": "Redeemed",
+      "effect": "When you gain this card, retreat Doom by 1.\nOnce per round, during the Action Phase, gain 1 Focus."
+    },
+    "consequence": {
+      "title": "One of Us",
+      "effect": "When you gain this card, advance Doom by 1.\nRoll 1 fewer die when resolving a test during a Combat Encounter or an Other World Encounter."
+    },
+    "targetCount": 8,
+    "trackerLabel": "Monster Toughness",
+    "trackType": "monsters"
+  },
+  "jacqueline-fine": {
+    "investigatorId": "jacqueline-fine",
+    "investigatorName": "Jacqueline Fine",
+    "storyTitle": "Arbiter of Fate",
+    "passCondition": "After gaining a Clue from your passive ability, you may spend 5 Clues to pass.",
+    "failCondition": "Doom advances to 6 or lower; shuffle the Mythos deck.",
+    "reward": {
+      "title": "Oracle",
+      "effect": "Once per round, when Doom advances, gain 1 Clue.\nYou may spend 3 Clues to negate the text effect of an Event Mythos card."
+    },
+    "consequence": {
+      "title": "Dark Future",
+      "effect": "Your maximum Sanity is reduced by 2.\nAfter you gain a Clue using your passive ability, lose 1 Sanity."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Clues Accumulated",
+    "trackType": "clues"
+  },
+  "jim-culver": {
+    "investigatorId": "jim-culver",
+    "investigatorName": "Jim Culver",
+    "storyTitle": "Dead Rising",
+    "passCondition": "When any non-Epic Monster is defeated or discarded, place that Monster here; then pass if 6+ Monsters are here.",
+    "failCondition": "You have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "Sweet Harmony",
+      "effect": "When a Monster is defeated or discarded, you or another investigator may gain 1 Focus or recover 1 Sanity.\nYou may reroll 1 die when resolving a test."
+    },
+    "consequence": {
+      "title": "Out of Tune",
+      "effect": "Your maximum Health and Sanity are reduced by 1.\nRoll 1 fewer die when resolving a Will test during a Combat Encounter."
+    },
+    "targetCount": 6,
+    "trackerLabel": "Monsters Collected",
+    "trackType": "monsters"
+  },
+  "leo-anderson": {
+    "investigatorId": "leo-anderson",
+    "investigatorName": "Leo Anderson",
+    "storyTitle": "The Expedition",
+    "passCondition": "You have 5+ Ally Assets.",
+    "failCondition": "Another investigator is defeated or devoured.",
+    "reward": {
+      "title": "Full Party",
+      "effect": "When you gain this card, gain 1 Character Unique Asset.\nYou cannot discard your Ally Assets unless you choose to."
+    },
+    "consequence": {
+      "title": "All Your Fault",
+      "effect": "Roll 1 fewer die when resolving an Influence or Will test.\nYour maximum Health and Sanity are reduced by 1."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Ally Assets",
+    "trackType": "allies"
+  },
+  "lily-chen": {
+    "investigatorId": "lily-chen",
+    "investigatorName": "Lily Chen",
+    "storyTitle": "All That Stands",
+    "passCondition": "You have improved each of your skills.",
+    "failCondition": "Doom advances to 6 or lower.",
+    "reward": {
+      "title": "The Chosen One",
+      "effect": "After you perform your action ability, recover 1 Health and 1 Sanity.\nRoll 2 additional dice when resolving tests while encountering Epic Monsters."
+    },
+    "consequence": {
+      "title": "Doomed to Failure",
+      "effect": "When you gain this card, discard 1 Improvement token for each skill.\nYou cannot improve a skill a second time unless you spend 1 Health or 1 Sanity."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Skills Improved",
+    "trackType": "skills"
+  },
+  "lola-hayes": {
+    "investigatorId": "lola-hayes",
+    "investigatorName": "Lola Hayes",
+    "storyTitle": "In the Limelight",
+    "passCondition": "The first time you pass a test for each skill, place a matching Improvement token here; then pass if a token for every skill is here.",
+    "failCondition": "You have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "Method Acting",
+      "effect": "When you gain this card, improve 2 skills of your choice.\nAfter you perform your action ability, you may perform 1 additional action."
+    },
+    "consequence": {
+      "title": "Denouement",
+      "effect": "Whenever you fail a test, discard 1 Improvement token. If you cannot, lose all of your Sanity. This loss of Sanity cannot be prevented."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Skills Improved",
+    "trackType": "skills"
+  },
+  "mark-harrigan": {
+    "investigatorId": "mark-harrigan",
+    "investigatorName": "Mark Harrigan",
+    "storyTitle": "Shadowed Heart",
+    "passCondition": "When you defeat a non-Epic Monster during a Combat Encounter, place that Monster here; then pass if Monsters here total toughness 10+.",
+    "failCondition": "Another investigator is defeated or devoured.",
+    "reward": {
+      "title": "A Reason to Live",
+      "effect": "Your maximum Sanity is increased by 2.\nWhen you gain this card, recover 2 Sanity.\nWhen a Monster loses Health from your Action ability, it loses 2 additional Health."
+    },
+    "consequence": {
+      "title": "Total Abandon",
+      "effect": "Increase the damage and horror of Monsters you encounter by 1.\nAfter resolving a Combat Encounter, you and that Monster each lose 1 Health."
+    },
+    "targetCount": 10,
+    "trackerLabel": "Monster Toughness",
+    "trackType": "monsters"
+  },
+  "norman-withers": {
+    "investigatorId": "norman-withers",
+    "investigatorName": "Norman Withers",
+    "storyTitle": "Written in the Stars",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "When the Omen advances to a blue space of its track, place 1 Eldritch token here; then fail if 5 Eldritch tokens are here.",
+    "reward": {
+      "title": "As Foretold",
+      "effect": "When you gain this card, move the Omen to any space of the track without advancing Doom.\nOnce per round, you may spend 1 fewer Clue to pay for an effect."
+    },
+    "consequence": {
+      "title": "Discredited",
+      "effect": "When you gain this card, spawn 1 Gate.\nYour maximum Sanity is reduced by 2."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "silas-marsh": {
+    "investigatorId": "silas-marsh",
+    "investigatorName": "Silas Marsh",
+    "storyTitle": "The Call",
+    "passCondition": "When you spend a Resource, place that Resource here; then pass if 5+ Resources are here.",
+    "failCondition": "You have only 1 Sanity.",
+    "reward": {
+      "title": "Smooth Sailing",
+      "effect": "Once per round, you may spend 1 fewer Resource to pay for an effect.\nWhen you spend a Resource as part of a Rest action, recover 1 Sanity or gain 1 Focus."
+    },
+    "consequence": {
+      "title": "Dark Depths",
+      "effect": "If you would be defeated, you are devoured instead.\nReckoning: Lose 1 Sanity."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Resources Spent",
+    "trackType": "resources"
+  },
+  "trish-scarborough": {
+    "investigatorId": "trish-scarborough",
+    "investigatorName": "Trish Scarborough",
+    "storyTitle": "Cracking the Code",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "Doom advances to 6 or lower.",
+    "reward": {
+      "title": "Breaking the Limits",
+      "effect": "Gain +X to all skills where X is the number of Focus you have.\nOnce per round, when you spend 1 Focus, you may gain 1 Focus."
+    },
+    "consequence": {
+      "title": "Shadows",
+      "effect": "Roll 1 fewer die when resolving an Influence or Observation test.\nYou cannot reroll each die more than once."
+    }
+  },
+  "agnes-baker": {
+    "investigatorId": "agnes-baker",
+    "investigatorName": "Agnes Baker",
+    "storyTitle": "In a Past Life",
+    "passCondition": "When you defeat a non-Epic Monster during a Combat Encounter, place it here; then pass if the total toughness here is 10 or greater.",
+    "failCondition": "When you have only 1 Health.",
+    "reward": {
+      "title": "Blood Awakened",
+      "effect": "Each 6 you roll when resolving a Spell effect counts as 2 successes.\nOnce per round, you may reroll any number of dice when resolving a Lore test as part of a Spell effect."
+    },
+    "consequence": {
+      "title": "History Repeats",
+      "effect": "Increase the damage and horror of Monsters you encounter by 1.\nAfter resolving a Spell effect, discard that Spell unless you used your passive ability."
+    }
+  },
+  "daisy-walker": {
+    "investigatorId": "daisy-walker",
+    "investigatorName": "Daisy Walker",
+    "storyTitle": "Unknown Secrets",
+    "passCondition": "After performing a Rest action, you may spend 5 Clues to pass.",
+    "failCondition": "When you have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "The Missing Book",
+      "effect": "When you gain this card, gain 2 Tome Artifacts. Then discard 1 of them.\nIf you would spend Sanity as part of a Tome possession effect, you may spend 1 fewer Sanity as part of that effect."
+    },
+    "consequence": {
+      "title": "Anterograde Amnesia",
+      "effect": "When you do not have an Amnesia Condition, discard 1 Clue or 1 Spell and gain an Amnesia Condition."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Clues Accumulated",
+    "trackType": "clues"
+  },
+  "finn-edwards": {
+    "investigatorId": "finn-edwards",
+    "investigatorName": "Finn Edwards",
+    "storyTitle": "Don't Get Caught",
+    "passCondition": "When you flip a Courier Run Unique Asset, place 1 random Clue face up here; pass after resolving a location encounter on that space.",
+    "failCondition": "When you gain a Detained or Wanted Condition.",
+    "reward": {
+      "title": "Notorious Smuggler",
+      "effect": "After resolving your action ability, you and/or the other investigator may perform an additional Trade or Travel action."
+    },
+    "consequence": {
+      "title": "Known Criminal",
+      "effect": "You cannot perform the Acquire Assets action or the Prepare for Travel action."
+    }
+  },
+  "george-barnaby": {
+    "investigatorId": "george-barnaby",
+    "investigatorName": "George Barnaby",
+    "storyTitle": "My Sweet Maria",
+    "passCondition": "When a Cultist Monster is defeated or discarded, place 1 Eldritch token here; then pass if there are 3 here.",
+    "failCondition": "When you have only 1 Health.",
+    "reward": {
+      "title": "Justice",
+      "effect": "When you gain this card, recover 2 Health and advance the active Mystery by 1.\nYour maximum Health is increased by 2."
+    },
+    "consequence": {
+      "title": "Lost and Alone",
+      "effect": "When you gain this card, discard all of your Ally Assets.\nYou cannot gain Ally Assets.\nYour maximum Sanity is reduced by 2."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "patrice-hathaway": {
+    "investigatorId": "patrice-hathaway",
+    "investigatorName": "Patrice Hathaway",
+    "storyTitle": "Cadenza",
+    "passCondition": "After you perform your action ability, if you have 3 or more Improvement tokens.",
+    "failCondition": "At the end of the Encounter Phase, if Clues on the game board are at least the number of investigators + 6.",
+    "reward": {
+      "title": "Inspiring Virtuoso",
+      "effect": "Once per round, when a Gate spawns, gain 1 Clue.\nYou may allow another investigator on any space to spend your Clues."
+    },
+    "consequence": {
+      "title": "Chant du Cygne",
+      "effect": "When you gain this card, spawn 1 Gate.\nYou roll a maximum of 3 dice when resolving tests."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Improvement Tokens",
+    "trackType": "tokens"
+  },
+  "tommy-muldoon": {
+    "investigatorId": "tommy-muldoon",
+    "investigatorName": "Tommy Muldoon",
+    "storyTitle": "We Need a Hero!",
+    "passCondition": "When you defeat a non-Epic Monster during a Combat Encounter, place it here; then pass if the total toughness here is 10 or greater.",
+    "failCondition": "When another investigator is Defeated or Devoured.",
+    "reward": {
+      "title": "Valiant Protector",
+      "effect": "When you gain this card, improve Strength and Will.\nOnce per round, you may reroll any number of dice when resolving a test during a Combat Encounter."
+    },
+    "consequence": {
+      "title": "Not Good Enough",
+      "effect": "When you gain this card, discard 2 Improvement tokens.\nYour maximum Health and Sanity are reduced by 1."
+    }
+  },
+  "ursula-downs": {
+    "investigatorId": "ursula-downs",
+    "investigatorName": "Ursula Downs",
+    "storyTitle": "Next Big Discovery",
+    "passCondition": "Action — if you are on a named City space, you may discard 1 Artifact to pass.",
+    "failCondition": "When Doom advances to 6 or lower.",
+    "reward": {
+      "title": "Renowned",
+      "effect": "When you gain this card, gain the Jake Williams Unique Asset.\nOnce per round, during the Action Phase, you may gain 1 Focus or 1 Resource."
+    },
+    "consequence": {
+      "title": "Pandora's Box",
+      "effect": "When you gain this card, advance Doom by 1.\nReckoning: Spawn 1 Monster on the space that contains a Gate with the fewest Monsters."
+    }
+  },
+  "wilson-richards": {
+    "investigatorId": "wilson-richards",
+    "investigatorName": "Wilson Richards",
+    "storyTitle": "Heckuva Job",
+    "passCondition": "When a Rumor is solved during the Encounter Phase.",
+    "failCondition": "When a Rumor is solved during the Mythos Phase.",
+    "reward": {
+      "title": "Jack of All Trades",
+      "effect": "When you perform a Focus action, gain 1 Resource.\nOnce per round, when you spend a Focus, gain 1 Focus."
+    },
+    "consequence": {
+      "title": "Too Little, Too Late",
+      "effect": "Your maximum Health is reduced by 2.\nYou cannot reroll each die more than once."
+    }
+  },
+  "marie-lambeau": {
+    "investigatorId": "marie-lambeau",
+    "investigatorName": "Marie Lambeau",
+    "storyTitle": "Grand-mere's Warning",
+    "passCondition": "When you have a Glamour Spell, an Incantation Spell, and a Ritual Spell.",
+    "failCondition": "When Doom advances to 6 or lower.",
+    "reward": {
+      "title": "Smokey Velvet",
+      "effect": "When you gain this card, retreat Doom by 1.\nOnce per round, after you perform an action, you may allow another investigator on any space to perform that action."
+    },
+    "consequence": {
+      "title": "Evil of Old",
+      "effect": "When you gain this card, draw 3 yellow Mythos cards from the game box and resolve the text effect of each. Then discard those cards."
+    }
+  },
+  "skids-otoole": {
+    "investigatorId": "skids-otoole",
+    "investigatorName": "Skids OToole",
+    "storyTitle": "Leave it to Chance",
+    "specialReckoning": "Reckoning: Roll 2 dice.",
+    "passCondition": "On a sum of 7 or 11.",
+    "failCondition": "On a sum of 2, 3, or 12.",
+    "reward": {
+      "title": "Lucky Seven",
+      "effect": "Whenever you roll a 2 during a test, you may reroll that die."
+    },
+    "consequence": {
+      "title": "Snake Eyes",
+      "effect": "You cannot reroll each die more than once."
+    }
+  },
+  "tony-morgan": {
+    "investigatorId": "tony-morgan",
+    "investigatorName": "Tony Morgan",
+    "storyTitle": "Thrill of the Hunt",
+    "passCondition": "When you defeat a non-Epic Monster during a Combat Encounter, place it here; then pass if there are 5 or more Monsters here.",
+    "failCondition": "When you have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "Trophy Hunter",
+      "effect": "Action: You may spend any number of Focus to gain an equal number of Clues.\nWhen you defeat a Monster during a Combat Encounter, gain 1 Resource."
+    },
+    "consequence": {
+      "title": "Blacklisted",
+      "effect": "When you gain this card, gain an Agreement Condition.\nYou cannot spend Focus or Resources as part of an Acquire Assets Action."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Monsters Defeated",
+    "trackType": "monsters"
+  },
+  "zoey-samaras": {
+    "investigatorId": "zoey-samaras",
+    "investigatorName": "Zoey Samaras",
+    "storyTitle": "In His Name",
+    "passCondition": "When you flip a Task Unique Asset, place 1 Eldritch token here; then pass if there are 3 or more here.",
+    "failCondition": "At the end of the Encounter Phase, if there are 5 or more Gates on the game board.",
+    "reward": {
+      "title": "Crusade",
+      "effect": "When you gain this card, gain 2 Task Unique Assets. Then discard 1 Task Asset.\nWhen you defeat a Monster during a Combat Encounter, you may place 1 token of any type on a Task Unique Asset."
+    },
+    "consequence": {
+      "title": "Gone Astray",
+      "effect": "When you gain this card, gain 1 Bane Condition.\nIf an effect of a Task Unique Asset allows you to \"flip this card,\" you must flip this card."
+    }
+  },
+  "hank-samson": {
+    "investigatorId": "hank-samson",
+    "investigatorName": "Hank Samson",
+    "storyTitle": "Where's Pa?",
+    "passCondition": "Whenever you gain a Clue during a Research Encounter, place 1 Eldritch token here; then pass at 3 tokens.",
+    "failCondition": "When you have 3 or less Health.",
+    "reward": {
+      "title": "I Found Pa!",
+      "effect": "When you gain this card, improve Lore and Influence.\nReduce the damage of Monsters you encounter to 1."
+    },
+    "consequence": {
+      "title": "Congenital Analgesia",
+      "effect": "When you lose Health, gain that many Injury Conditions.\nSubtract 1 from the result of each die you roll as part of an Injury Condition effect."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "harvey-walters": {
+    "investigatorId": "harvey-walters",
+    "investigatorName": "Harvey Walters",
+    "storyTitle": "Higher Education",
+    "passCondition": "When you improve a skill or let another investigator improve a skill using your action ability, track 1 Eldritch token; at 5 tokens.",
+    "failCondition": "End of Encounter Phase, if 5+ Gates are on the board.",
+    "reward": {
+      "title": "Eureka!",
+      "effect": "When you gain this card, improve 2 skills of your choice.\nOnce per round, when you spend a Clue, gain 1 Clue."
+    },
+    "consequence": {
+      "title": "Worse than I Feared",
+      "effect": "When you gain this card, impair 2 skills of your choice.\nIf you would lose Sanity, lose that amount plus 1 instead."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "joe-diamond": {
+    "investigatorId": "joe-diamond",
+    "investigatorName": "Joe Diamond",
+    "storyTitle": "Finish the Job",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "End of Encounter Phase, if Clues on the board ≥ number of investigators + 6.",
+    "reward": {
+      "title": "Hardboiled",
+      "effect": "When you gain this card, improve 2 skills of your choice.\nIf you spend a Clue to reroll a die, you may reroll up to 2 dice instead."
+    },
+    "consequence": {
+      "title": "Cold Case",
+      "effect": "When you gain this card, impair your 2 highest skills.\nYour maximum Health is reduced by 2."
+    }
+  },
+  "mandy-thompson": {
+    "investigatorId": "mandy-thompson",
+    "investigatorName": "Mandy Thompson",
+    "storyTitle": "Connect the Dots",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "When you have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "The Answer Is Clear",
+      "effect": "When you gain this card, spawn 3 Clues.\nTreat the number of investigators as 1 lower when determining its value on Mystery, Adventure, and Mythos cards."
+    },
+    "consequence": {
+      "title": "Inevitability",
+      "effect": "When you gain this card, advance Doom by 1.\nRoll 1 fewer die when resolving a test during a Research Encounter or an effect of a Mystery or Rumor Mythos card."
+    }
+  },
+  "minh-thi-phan": {
+    "investigatorId": "minh-thi-phan",
+    "investigatorName": "Minh Thi Phan",
+    "storyTitle": "Alone and Afraid",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "End of Action Phase, if no other investigator is on your space and you have no Ally Asset, add 1 Eldritch token; fail at 3 tokens.",
+    "reward": {
+      "title": "Loyalty",
+      "effect": "When you gain this card, gain 1 Character Unique Asset.\nYou cannot discard your Ally Assets unless you choose to."
+    },
+    "consequence": {
+      "title": "Falling Apart",
+      "effect": "When you gain this card, impair Influence and Will.\nYour maximum Health and Sanity are reduced by 1."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "monterey-jack": {
+    "investigatorId": "monterey-jack",
+    "investigatorName": "Monterey Jack",
+    "storyTitle": "Searching Ages Past",
+    "passCondition": "After each Expedition Encounter, add 1 Eldritch token; at 3 tokens.",
+    "failCondition": "End of Encounter Phase, if Clues on the board ≥ number of investigators + 6.",
+    "reward": {
+      "title": "Nothing Stays Hidden",
+      "effect": "When you gain this card, gain 1 Artifact.\nAfter resolving an Expedition Encounter or a Mystic Ruins Encounter, gain 1 Clue and Spawn 1 Clue."
+    },
+    "consequence": {
+      "title": "Dug Too Deep",
+      "effect": "When you gain this card, impair Observation and 1 other skill of your choice.\nYour maximum Health and Sanity are reduced by 1."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "rex-murphy": {
+    "investigatorId": "rex-murphy",
+    "investigatorName": "Rex Murphy",
+    "storyTitle": "Dispelling the Curse",
+    "passCondition": "When you gain a Cursed Condition, you may spend 5 Clues.",
+    "failCondition": "If you would flip a Cursed Condition, gain the Consequence instead of flipping.",
+    "reward": {
+      "title": "Curse Lifted",
+      "effect": "You lose your passive ability.\nWhen you gain this card, discard a Cursed Condition.\nReckoning: Gain 1 Clue and improve 1 skill of your choice."
+    },
+    "consequence": {
+      "title": "Downward Spiral",
+      "effect": "Reckoning: Flip your Cursed Condition."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Clues Accumulated",
+    "trackType": "clues"
+  },
+  "sister-mary": {
+    "investigatorId": "sister-mary",
+    "investigatorName": "Sister Mary",
+    "storyTitle": "He is My Shepherd",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "If you would gain a Bane Condition, gain the Consequence instead of the Bane.",
+    "reward": {
+      "title": "Fear No Evil",
+      "effect": "When you gain this card, improve Influence and Will\nYou cannot discard a Boon Condition nor can you gain a Bane Condition unless you choose to."
+    },
+    "consequence": {
+      "title": "Faith Shaken",
+      "effect": "When you gain this card, impair Will twice.\nIf you would lose Sanity, lose that amount plus 1 instead."
+    }
+  },
+  "dexter-drake": {
+    "investigatorId": "dexter-drake",
+    "investigatorName": "Dexter Drake",
+    "storyTitle": "The Great Drake",
+    "passCondition": "Track each Lore test passed as part of a Spell effect (1 Eldritch token); at 6 tokens.",
+    "failCondition": "End of Encounter Phase, if 5+ Gates are on the board.",
+    "reward": {
+      "title": "Sorcerer Supreme",
+      "effect": "When you gain this card, gain 2 Ritual Spells.\nOnce per round, when you perform the action of a Ritual Spell, you may perform 1 additional action on another Ritual Spell you have."
+    },
+    "consequence": {
+      "title": "Delve Too Deep",
+      "effect": "After flipping a Spell and resolving the effects on its back, lose 2 Sanity unless you discard that Spell."
+    },
+    "targetCount": 6,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "jenny-barnes": {
+    "investigatorId": "jenny-barnes",
+    "investigatorName": "Jenny Barnes",
+    "storyTitle": "Search for Isabelle",
+    "onGainText": "Place 3 random Clues faceup. After an encounter on one of their spaces, discard that Clue.",
+    "passCondition": "No Clues remain on this card.",
+    "failCondition": "Doom advances to 6 or lower.",
+    "reward": {
+      "title": "Isabelle",
+      "effect": "When you gain this card, improve Observation and Will.\nWhen another investigator accepts a Bank Loan as part of an Acquire Assets Action, that investigator adds 1 additional success to the test result."
+    },
+    "consequence": {
+      "title": "Too Late",
+      "effect": "When you gain this card, impair Influence and Will.\nYour maximum Health and Sanity are reduced by 1."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Clues Tracked",
+    "trackType": "clues"
+  },
+  "michael-mcglen": {
+    "investigatorId": "michael-mcglen",
+    "investigatorName": "Michael McGlen",
+    "storyTitle": "Oath of Vengeance",
+    "passCondition": "Keep non-Epic Monsters you defeat during Combat Encounters on this card; when their total toughness is 10+.",
+    "failCondition": "End of Action Phase, if you have 2+ Deal and/or Pursuit Conditions.",
+    "reward": {
+      "title": "For Louie",
+      "effect": "When you gain this card, recover 2 Sanity and improve Strength and Will.\nYour maximum Sanity is increased by 2."
+    },
+    "consequence": {
+      "title": "On the Run",
+      "effect": "When you gain this card, impair your Influence twice.\nYou must perform the Travel action each round if able."
+    }
+  },
+  "wendy-adams": {
+    "investigatorId": "wendy-adams",
+    "investigatorName": "Wendy Adams",
+    "storyTitle": "Memento",
+    "passCondition": "After a Research Encounter, you may spend 3 Clues to place 1 random Clue faceup here; then resolve a location encounter on that space.",
+    "failCondition": "Gain a Bane, Illness, Injury, or Madness Condition.",
+    "reward": {
+      "title": "Reunited",
+      "effect": "Mythos card text effects cannot cause you to lose Health or Sanity."
+    },
+    "consequence": {
+      "title": "Downtrodden",
+      "effect": "When you fail a test, lose 1 Sanity.\nYou cannot be the Lead Investigator unless there is no other option."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Clues Tracked",
+    "trackType": "clues"
+  },
+  "amanda-sharpe": {
+    "investigatorId": "amanda-sharpe",
+    "investigatorName": "Amanda Sharpe",
+    "storyTitle": "Dreaming of R'lyeh",
+    "passCondition": "Whenever you gain a Clue during a Research Encounter, place 1 Eldritch token here; then pass at 3 tokens.",
+    "failCondition": "End of Encounter Phase, 5+ Gates on the board.",
+    "reward": {
+      "title": "Honor Student",
+      "effect": "When you gain this card, improve Lore and Observation.\nYou may spend 1 Improvement token to reroll any number of dice when resolving a test."
+    },
+    "consequence": {
+      "title": "Deep Destiny",
+      "effect": "Whenever you fail a test, discard 1 Talent Condition.\nWhenever you move along a Ship path, lose 1 Sanity."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "carolyn-fern": {
+    "investigatorId": "carolyn-fern",
+    "investigatorName": "Carolyn Fern",
+    "storyTitle": "Final Analysis",
+    "passCondition": "Once per round, when another investigator on your space Rests, spawn 1 Clue; then pass if Clues held by investigators and/or on the board total at least 2 × the number of investigators.",
+    "failCondition": "Another investigator is defeated with zero Sanity.",
+    "reward": {
+      "title": "Missing Link",
+      "effect": "When you gain this card, improve Lore and Will.\nOnce per round, when another investigator on your space performs a Rest action, gain 1 Clue."
+    },
+    "consequence": {
+      "title": "Growing Unrest",
+      "effect": "Your maximum Sanity is reduced by 2.\nYou can recover Health or Sanity as part of a Rest action, but not both."
+    }
+  },
+  "darrell-simmons": {
+    "investigatorId": "darrell-simmons",
+    "investigatorName": "Darrell Simmons",
+    "storyTitle": "A Thousand Words",
+    "passCondition": "Whenever you gain a Clue during a Research Encounter, place 1 Eldritch token here; then pass at 3 tokens.",
+    "failCondition": "Doom advances to 6 or lower.",
+    "reward": {
+      "title": "Photographic Proof",
+      "effect": "When you gain this card, gain 3 Clues.\nAs part of an Acquire Assets Action, you may spend 1 Clue to add 2 successes to your test result."
+    },
+    "consequence": {
+      "title": "The Film is Ruined",
+      "effect": "When you gain this card, discard 1 Camera Asset.\nYou cannot accept a Bank Loan as part of an Acquire Assets action."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "gloria-goldberg": {
+    "investigatorId": "gloria-goldberg",
+    "investigatorName": "Gloria Goldberg",
+    "storyTitle": "Based on a True Story",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "End of Encounter Phase, 5+ Gates on the board.",
+    "reward": {
+      "title": "Inspiration",
+      "effect": "After you perform an action of a Tome possession, you may recover 1 Sanity, gain 1 Focus, or spend 1 Sanity or 1 Focus to gain 1 Clue."
+    },
+    "consequence": {
+      "title": "Captivated",
+      "effect": "You must perform the action of a Tome possession each round if able."
+    }
+  },
+  "kate-winthrop": {
+    "investigatorId": "kate-winthrop",
+    "investigatorName": "Kate Winthrop",
+    "storyTitle": "Resonance",
+    "passCondition": "When any Gate is closed or discarded, place that Gate here; then pass at 5+ Gates.",
+    "failCondition": "Another investigator is defeated or devoured.",
+    "reward": {
+      "title": "I Understand!",
+      "effect": "When you gain this card, gain 3 Clues.\nIf a Gate would spawn that corresponds to the current Omen, you may spend 2 Clues to discard that Gate instead."
+    },
+    "consequence": {
+      "title": "Not Again",
+      "effect": "When you gain this card, discard a total of 3 Clues and/or Improvement tokens.\nYour maximum Sanity is reduced by 2."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Gates Placed",
+    "trackType": "gates"
+  },
+  "luke-robinson": {
+    "investigatorId": "luke-robinson",
+    "investigatorName": "Luke Robinson",
+    "storyTitle": "Shadow of Doubt",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "End of Encounter Phase, 5+ Gates on the board.",
+    "reward": {
+      "title": "Dreamer",
+      "effect": "When you gain this card, gain 1 Walking the Ley Lines Unique Asset.\nWhen you close a Gate during an Other World Encounter, gain 1 Clue and 1 Focus."
+    },
+    "consequence": {
+      "title": "Insomnia",
+      "effect": "Your maximum Sanity is reduced by 2.\nYou can recover Health or Sanity as a part of a Rest action, but not both."
+    }
+  },
+  "vincent-lee": {
+    "investigatorId": "vincent-lee",
+    "investigatorName": "Vincent Lee",
+    "storyTitle": "The Doctor is In",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "Another investigator is defeated with zero Health.",
+    "reward": {
+      "title": "Do No Harm",
+      "effect": "When you gain this card, gain a Composed Condition and a Practiced Condition.\nWhen you gain a Resource, gain 1 additional Resource."
+    },
+    "consequence": {
+      "title": "Mortal Wounds",
+      "effect": "When you gain this card, discard 1 Talent Condition.\nYour maximum Health is reduced by 2."
+    }
+  },
+  "william-yorick": {
+    "investigatorId": "william-yorick",
+    "investigatorName": "William Yorick",
+    "storyTitle": "To Be Or Not To Be",
+    "passCondition": "A Mystery is solved.",
+    "failCondition": "You have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "Commitment",
+      "effect": "When you gain this card, improve Observation and 1 other skill of your choice.\nWhen you defeat a Monster during a Combat Encounter, gain 1 Resource."
+    },
+    "consequence": {
+      "title": "Alas, Poor Yorick",
+      "effect": "Your maximum Health is reduced by 2.\nRoll 1 fewer die when resolving a Will test."
+    }
+  },
+  "ashcan-pete": {
+    "investigatorId": "ashcan-pete",
+    "investigatorName": "Ashcan Pete",
+    "storyTitle": "Powerful Nightmares",
+    "onGainText": "Place 3 random Clues faceup here.",
+    "passCondition": "After you resolve an encounter on a listed space, discard its Clue; then pass when none remain.",
+    "failCondition": "You do not have the Duke Unique Asset.",
+    "reward": {
+      "title": "Sweet Dreams",
+      "effect": "Once per round, you may reroll all of your dice when resolving a test.\nYou cannot discard the Duke Unique Asset unless you choose to."
+    },
+    "consequence": {
+      "title": "Barely Holding On",
+      "effect": "After resolving setup during a campaign, discard the Duke Unique Asset.\nIf you would lose Sanity, lose that amount plus 1 instead."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Clues Tracked",
+    "trackType": "clues"
+  },
+  "bob-jenkins": {
+    "investigatorId": "bob-jenkins",
+    "investigatorName": "Bob Jenkins",
+    "storyTitle": "Doing Business",
+    "passCondition": "Once per round, when you gain an Asset with printed value ≥ the Eldritch token count here, place 1 Eldritch token here; then pass at 5 tokens.",
+    "failCondition": "End of Action Phase, you have 2+ Deal Conditions.",
+    "reward": {
+      "title": "Jackpot!",
+      "effect": "When you gain this card, gain a Silver Tongued Condition.\nYou may spend 2 successes to gain 1 Clue as part of an Acquire Assets action."
+    },
+    "consequence": {
+      "title": "Greed",
+      "effect": "You must accept a Bank Loan as part of an Acquire Assets action if able.\nSubtract 1 from the result of each die you roll as part of a Deal Condition effect."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "rita-young": {
+    "investigatorId": "rita-young",
+    "investigatorName": "Rita Young",
+    "storyTitle": "Through Prejudice",
+    "passCondition": "When you defeat a non-Epic Monster during a Combat Encounter, place it here; then pass when Monsters here total 10+ toughness.",
+    "failCondition": "You have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "The Comeback",
+      "effect": "When you gain this card, improve Observation and Will.\nOnce per round, when you gain a Talent Condition, improve 1 skill of your choice."
+    },
+    "consequence": {
+      "title": "Leave Me Alone!",
+      "effect": "Increase the damage and horror of Monsters you encounter by 1."
+    }
+  },
+  "roland-banks": {
+    "investigatorId": "roland-banks",
+    "investigatorName": "Roland Banks",
+    "storyTitle": "The Truth is Out There",
+    "passCondition": "Whenever you gain a Clue during a Research Encounter, place 1 Eldritch token here; then pass at 3 tokens.",
+    "failCondition": "You have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "By The Book",
+      "effect": "When you gain this card, set aside 2 random Service Assets from the deck.\nYou may use your passive ability up to twice per round."
+    },
+    "consequence": {
+      "title": "Early Retirement",
+      "effect": "When this card enters play, advance Doom by 1.\nSubtract 1 from the result of each die you roll as part of a non-Deal Condition effect."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "agatha-crane": {
+    "investigatorId": "agatha-crane",
+    "investigatorName": "Agatha Crane",
+    "storyTitle": "The Scientific Method",
+    "passCondition": "After gaining a Clue from your passive ability, you may spend 5 Clues.",
+    "failCondition": "When you have only 1 Sanity.",
+    "reward": {
+      "title": "Rational Explanation",
+      "effect": "When you gain this card, improve Lore and Observation.\nYou may spend 1 Clue when resolving a test to reroll any number of dice."
+    },
+    "consequence": {
+      "title": "Superstition",
+      "effect": "If you would lose Sanity, lose that amount plus 1 instead.\nWhenever you lose Sanity, discard that many Clues."
+    },
+    "targetCount": 5,
+    "trackerLabel": "Clues Accumulated",
+    "trackType": "clues"
+  },
+  "calvin-wright": {
+    "investigatorId": "calvin-wright",
+    "investigatorName": "Calvin Wright",
+    "storyTitle": "A Friend Indeed",
+    "passCondition": "After one use of your action ability gives another investigator a total of 6+ Health and/or Sanity.",
+    "failCondition": "When another investigator is defeated or devoured.",
+    "reward": {
+      "title": "Calvin's Will",
+      "effect": "When you gain this card, recover 1 Health and 1 Sanity and improve Will twice.\nYour maximum Health and Sanity are increased by 1."
+    },
+    "consequence": {
+      "title": "Calvin's Demons",
+      "effect": "You cannot recover Health or Sanity as part of a Rest action.\nWhen you are defeated or devoured, advance Doom by an additional 2."
+    }
+  },
+  "carson-sinclair": {
+    "investigatorId": "carson-sinclair",
+    "investigatorName": "Carson Sinclair",
+    "storyTitle": "Seeking Answers",
+    "passCondition": "Whenever you gain a Clue during a Research Encounter, place 1 Eldritch token here; then pass if there are 3 tokens.",
+    "failCondition": "When another investigator is defeated or devoured.",
+    "reward": {
+      "title": "Loyal Friend",
+      "effect": "When you gain this card, improve 2 skills of your choice.\nOther investigators on your space roll 1 additional die when resolving a test."
+    },
+    "consequence": {
+      "title": "Failed Again",
+      "effect": "Your maximum Health and Sanity are reduced by 1.\nYou roll a maximum of 3 dice when resolving tests."
+    }
+  },
+  "daniela-reyes": {
+    "investigatorId": "daniela-reyes",
+    "investigatorName": "Daniela Reyes",
+    "storyTitle": "The Shape of Things",
+    "passCondition": "When you spend a Resource, place 1 Resource here; then pass if there are 8 Resources.",
+    "failCondition": "At end of Encounter Phase, 10+ Monsters on the game board.",
+    "reward": {
+      "title": "Resourceful",
+      "effect": "Once per round, when you spend a Resource, gain 1 Resource.\nOnce per round, you may spend 1 Resource to add 1 to the result of 1 die when resolving a test."
+    },
+    "consequence": {
+      "title": "Superstitious",
+      "effect": "Increase the horror of Monsters you encounter by 1.\nWhen you lose 1 or more Sanity during a Combat Encounter, gain 1 Madness Condition."
+    },
+    "targetCount": 8,
+    "trackerLabel": "Resources Spent",
+    "trackType": "resources"
+  },
+  "father-mateo": {
+    "investigatorId": "father-mateo",
+    "investigatorName": "Father Mateo",
+    "storyTitle": "In Nomine Patris",
+    "passCondition": "When you give another investigator a Boon Condition, place 1 Eldritch token here; then pass at 3+ tokens.",
+    "failCondition": "At end of Encounter Phase, Clues on the game board ≥ number of investigators + 6.",
+    "reward": {
+      "title": "Charitable Father",
+      "effect": "When you gain a Boon Condition, gain 1 Focus.\nWhen you give a Boon Condition to another investigator, you and that investigator each gain 1 Focus."
+    },
+    "consequence": {
+      "title": "Undeniable",
+      "effect": "Treat the number of investigators as 1 higher when determining its value on Mystery, Adventure, and Mythos cards."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Tokens on Story",
+    "trackType": "tokens"
+  },
+  "preston-fairmont": {
+    "investigatorId": "preston-fairmont",
+    "investigatorName": "Preston Fairmont",
+    "storyTitle": "Wealth Without Work",
+    "passCondition": "After any investigator performs an Acquire Assets Action, that investigator has 8+ Assets.",
+    "failCondition": "When you have only 1 Health or 1 Sanity.",
+    "reward": {
+      "title": "Philanthropy",
+      "effect": "When you gain this card, improve Influence and Will.\nOnce per round, when you or another investigator gains a Resource, that investigator may gain 1 additional Resource."
+    },
+    "consequence": {
+      "title": "Festering Greed",
+      "effect": "You cannot give any of your possession to another investigator as part of a Trade.\nWhen another investigator performs an Acquire Assets Action, lose 1 Sanity."
+    },
+    "targetCount": 8,
+    "trackerLabel": "Assets Owned",
+    "trackType": "assets"
+  },
+  "sefina-rousseau": {
+    "investigatorId": "sefina-rousseau",
+    "investigatorName": "Sefina Rousseau",
+    "storyTitle": "Calling",
+    "passCondition": "When you spend an Improvement token, you may place it here; pass when there are 3 Improvement tokens.",
+    "failCondition": "At end of Encounter Phase, 5+ Gates on the game board.",
+    "reward": {
+      "title": "The Painted World",
+      "effect": "When you gain this card, improve Lore and Will.\nAction: Reveal the top Gate of the Gate stack. Discard that Gate or perform an additional action."
+    },
+    "consequence": {
+      "title": "Lost Reality",
+      "effect": "Roll 1 fewer die when resolving an Observation test.\nAfter resolving an Other World Encounter, move to a random space."
+    },
+    "targetCount": 3,
+    "trackerLabel": "Improvement Tokens",
+    "trackType": "tokens"
+  }
+}
